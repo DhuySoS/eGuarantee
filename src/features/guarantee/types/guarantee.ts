@@ -1,0 +1,137 @@
+export type GuaranteeStatus =
+  | 'DRAFT'
+  | 'PENDING_APPROVAL'
+  | 'APPROVED'
+  | 'REJECTED';
+
+export type GuaranteeType =
+  | 'BID_BOND'
+  | 'PERFORMANCE'
+  | 'ADVANCE_PAYMENT'
+  | 'PAYMENT'
+  | 'OTHER';
+
+export type Currency = 'VND' | 'USD';
+
+export type UserRole = 'MAKER' | 'CHECKER';
+
+export type HistoryAction =
+  | 'CREATE'
+  | 'UPDATE'
+  | 'SUBMIT'
+  | 'APPROVE'
+  | 'REJECT';
+
+export interface User {
+  username: string;
+  fullName: string;
+  role: UserRole;
+}
+
+export interface ProcessingHistory {
+  id: string;
+  action: HistoryAction;
+  user: string;
+  role: UserRole;
+  timestamp: string; // ISO string
+  comment?: string;
+}
+
+export interface Guarantee {
+  id: string;
+  status: GuaranteeStatus;
+
+  // Customer Information
+  customerCif: string;
+  customerName: string;
+  taxCode?: string;
+
+  // Guarantee Information
+  guaranteeType: GuaranteeType;
+  guaranteeAmount: number;
+  currency: Currency;
+  effectiveDate: string; // YYYY-MM-DD
+  expiryDate: string; // YYYY-MM-DD
+  guaranteeDays: number;
+  tenderNumber?: string;
+  purpose: string;
+
+  // Beneficiary Information
+  beneficiaryName: string;
+  beneficiaryAddress?: string;
+
+  // Contact Information
+  contactEmail: string;
+  phoneNumber?: string;
+
+  // Audit Information
+  createdBy: string;
+  createdDate: string; // ISO string
+  updatedBy?: string;
+  updatedDate?: string; // ISO string
+
+  // Histories
+  histories: ProcessingHistory[];
+}
+
+export type GuaranteeListItem = Pick<
+  Guarantee,
+  | 'id'
+  | 'customerCif'
+  | 'customerName'
+  | 'guaranteeType'
+  | 'guaranteeAmount'
+  | 'currency'
+  | 'createdDate'
+  | 'createdBy'
+  | 'status'
+>;
+
+export interface GuaranteeQueryParams {
+  keyword?: string;
+  status?: GuaranteeStatus;
+  guaranteeType?: GuaranteeType;
+  createdFrom?: string;
+  createdTo?: string;
+  page?: number;
+  size?: number;
+  sortBy?: 'createdDate' | 'guaranteeAmount' | 'customerName';
+  sortDirection?: 'asc' | 'desc';
+}
+
+export interface PaginationMeta {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface GuaranteeListResponse {
+  data: GuaranteeListItem[];
+  pagination: PaginationMeta;
+}
+
+export interface ApiFieldError {
+  field: string;
+  message: string;
+}
+
+export interface ApiErrorResponse {
+  timestamp: string;
+  status: number;
+  code: string;
+  message: string;
+  errors?: ApiFieldError[];
+}
+
+export type CreateGuaranteePayload = Omit<
+  Guarantee,
+  'id' | 'status' | 'guaranteeDays' | 'createdBy' | 'createdDate' | 'updatedBy' | 'updatedDate' | 'histories'
+>;
+
+export type UpdateGuaranteePayload = Partial<CreateGuaranteePayload>;
+
+export interface RejectGuaranteePayload {
+  reason: string;
+}
+
