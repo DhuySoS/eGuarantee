@@ -50,7 +50,7 @@ const NAV_ITEMS: NavItem[] = [
 const AppSidebar = () => {
   const pathname = usePathname();
   return (
-    <div className=" py-12 px-6 w-1/5 flex flex-col justify-between bg-gray-100 border-r border-r-gray-200">
+    <div className=" py-12 px-6 w-1/5 h-full shrink-0 flex flex-col justify-between bg-gray-100 border-r border-r-gray-200">
       <nav className="flex flex-col gap-2">
         {NAV_ITEMS.map((item) => {
           const isCreateOrEdit =
@@ -92,12 +92,7 @@ const AppSidebar = () => {
         })}
       </nav>
       <div className="flex justify-between items-center">
-        <UserMiniProfile
-          name="Nguyễn Văn A"
-          role="Maker"
-          avatarText="NA"
-          showRole={true}
-        />
+        <UserMiniProfile name="Nguyễn Văn A" role="Maker" showRole={true} />
         <UiButton color="danger" variant="solid">
           Đăng xuất
         </UiButton>

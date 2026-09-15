@@ -24,7 +24,7 @@ const GuaranteeListPage = () => {
         },
       ]}
     >
-      <p>Content</p>
+      <div className="min-h-screen">Content</div>
     </PageContainer>
   );
 };

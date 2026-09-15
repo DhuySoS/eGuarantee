@@ -21,9 +21,9 @@ const PageContainer: React.FC<PageContainerProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`max-w-full space-y-6 ${className}`}>
+    <div className={`h-full flex flex-col overflow-hidden ${className}`}>
       {(breadcrumbs || title || extra) && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 shrink-0">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <Breadcrumb items={breadcrumbs} />
           )}
@@ -48,7 +48,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
       )}
 
       {/* Main Content */}
-      <div className={`w-full px-6 py-4 `}>{children}</div>
+      <div className={`flex-1 overflow-auto px-6 py-4 `}>{children}</div>
     </div>
   );
 };

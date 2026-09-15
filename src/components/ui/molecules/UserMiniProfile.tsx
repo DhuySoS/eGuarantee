@@ -1,3 +1,4 @@
+import { getAvatarText } from "@/utils/format";
 import { Avatar } from "antd";
 import React from "react";
 
@@ -12,7 +13,7 @@ interface UserMiniProfileProps {
 const UserMiniProfile: React.FC<UserMiniProfileProps> = ({
   name = "Nguyễn Văn A",
   role = "Maker",
-  avatarText = "NA",
+  avatarText = getAvatarText(name),
   showRole = true,
   className = "",
 }) => {

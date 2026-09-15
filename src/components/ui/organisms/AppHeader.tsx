@@ -9,12 +9,7 @@ const AppHeader = () => {
       <div className="text-lg font-bold">Guarantee Portal</div>
       <div className="flex items-center gap-6">
         <BellOutlined style={{ fontSize: "20px" }} />
-        <UserMiniProfile
-          name="Nguyễn Văn A"
-          role="Maker"
-          avatarText="NA"
-          showRole={false}
-        />
+        <UserMiniProfile name="Nguyễn Văn A" role="Maker" showRole={false} />
         <Dropdown
           menu={{
             items: [
