@@ -1,26 +1,15 @@
 export type GuaranteeStatus =
-  | 'DRAFT'
-  | 'PENDING_APPROVAL'
-  | 'APPROVED'
-  | 'REJECTED';
+  "DRAFT" | "PENDING_APPROVAL" | "APPROVED" | "REJECTED";
 
 export type GuaranteeType =
-  | 'BID_BOND'
-  | 'PERFORMANCE'
-  | 'ADVANCE_PAYMENT'
-  | 'PAYMENT'
-  | 'OTHER';
+  "BID_BOND" | "PERFORMANCE" | "ADVANCE_PAYMENT" | "PAYMENT" | "OTHER";
 
-export type Currency = 'VND' | 'USD';
+export type Currency = "VND" | "USD";
 
-export type UserRole = 'MAKER' | 'CHECKER';
+export type UserRole = "MAKER" | "CHECKER";
 
 export type HistoryAction =
-  | 'CREATE'
-  | 'UPDATE'
-  | 'SUBMIT'
-  | 'APPROVE'
-  | 'REJECT';
+  "CREATE" | "UPDATE" | "SUBMIT" | "APPROVE" | "REJECT";
 
 export interface User {
   username: string;
@@ -76,15 +65,15 @@ export interface Guarantee {
 
 export type GuaranteeListItem = Pick<
   Guarantee,
-  | 'id'
-  | 'customerCif'
-  | 'customerName'
-  | 'guaranteeType'
-  | 'guaranteeAmount'
-  | 'currency'
-  | 'createdDate'
-  | 'createdBy'
-  | 'status'
+  | "id"
+  | "customerCif"
+  | "customerName"
+  | "guaranteeType"
+  | "guaranteeAmount"
+  | "currency"
+  | "createdDate"
+  | "createdBy"
+  | "status"
 >;
 
 export interface GuaranteeQueryParams {
@@ -95,8 +84,8 @@ export interface GuaranteeQueryParams {
   createdTo?: string;
   page?: number;
   size?: number;
-  sortBy?: 'createdDate' | 'guaranteeAmount' | 'customerName';
-  sortDirection?: 'asc' | 'desc';
+  sortBy?: "createdDate" | "guaranteeAmount" | "customerName";
+  sortDirection?: "asc" | "desc";
 }
 
 export interface PaginationMeta {
@@ -126,7 +115,14 @@ export interface ApiErrorResponse {
 
 export type CreateGuaranteePayload = Omit<
   Guarantee,
-  'id' | 'status' | 'guaranteeDays' | 'createdBy' | 'createdDate' | 'updatedBy' | 'updatedDate' | 'histories'
+  | "id"
+  | "status"
+  | "guaranteeDays"
+  | "createdBy"
+  | "createdDate"
+  | "updatedBy"
+  | "updatedDate"
+  | "histories"
 >;
 
 export type UpdateGuaranteePayload = Partial<CreateGuaranteePayload>;
@@ -134,4 +130,3 @@ export type UpdateGuaranteePayload = Partial<CreateGuaranteePayload>;
 export interface RejectGuaranteePayload {
   reason: string;
 }
-

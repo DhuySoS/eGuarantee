@@ -7,6 +7,7 @@ interface UserMiniProfileProps {
   role?: string;
   avatarText?: string;
   showRole?: boolean;
+  collapsed?: boolean;
   className?: string;
 }
 
@@ -15,17 +16,29 @@ const UserMiniProfile: React.FC<UserMiniProfileProps> = ({
   role = "Maker",
   avatarText = getAvatarText(name),
   showRole = true,
+  collapsed = false,
   className = "",
 }) => {
   return (
-    <div className={`flex gap-4 items-center w-full ${className}`}>
-      <Avatar size={40} style={{ backgroundColor: "#60a5fa" }}>
+    <div
+      className={`flex items-center gap-3 ${
+        collapsed ? "justify-center" : "w-full"
+      } ${className}`}
+      title={collapsed ? `${name} (${role})` : undefined}
+    >
+      <Avatar
+        size={40}
+        style={{ backgroundColor: "#60a5fa" }}
+        className="shrink-0"
+      >
         {avatarText}
       </Avatar>
-      <div className="space-y-1">
-        <div className="text-sm font-semibold">{name}</div>
-        {showRole && <div className="text-xs ">{role}</div>}
-      </div>
+      {!collapsed && (
+        <div className="space-y-0.5 truncate">
+          <div className="text-sm font-semibold truncate">{name}</div>
+          {showRole && <div className="text-xs text-gray-500">{role}</div>}
+        </div>
+      )}
     </div>
   );
 };

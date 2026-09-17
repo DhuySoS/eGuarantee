@@ -1,8 +1,6 @@
 import UiButton from "@/components/ui/atoms/UiButton";
 import PageContainer from "@/components/ui/organisms/PageContainer";
-import { PlusOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import React from "react";
 
 const GuaranteeListPage = () => {
   return (

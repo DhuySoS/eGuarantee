@@ -1,5 +1,7 @@
 "use client";
 import {
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
   FileTextOutlined,
   PlusCircleOutlined,
   ReadOutlined,
@@ -8,9 +10,10 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import UserMiniProfile from "../molecules/UserMiniProfile";
 import UiButton from "../atoms/UiButton";
+
 interface NavItem {
   key: string;
   label: string;
@@ -47,10 +50,17 @@ const NAV_ITEMS: NavItem[] = [
     icon: <UserOutlined />,
   },
 ];
+
 const AppSidebar = () => {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className=" py-12 px-6 w-1/5 h-full shrink-0 flex flex-col justify-between bg-gray-100 border-r border-r-gray-200">
+    <aside
+      className={`h-full shrink-0 flex flex-col justify-between bg-gray-100 border-r border-r-gray-200 transition-all duration-300 ease-in-out py-8 ${
+        collapsed ? "w-20 px-2" : "w-64 px-4"
+      }`}
+    >
       <nav className="flex flex-col gap-2">
         {NAV_ITEMS.map((item) => {
           const isCreateOrEdit =
@@ -64,40 +74,68 @@ const AppSidebar = () => {
                 : item.href
                   ? pathname.startsWith(item.href)
                   : false;
+
           return (
             <Link
               key={item.key}
               href={item.href || ""}
-              className={`relative flex items-center gap-3 px-2 py-4 rounded-md text-sm font-medium transition-colors ${
+              title={collapsed ? item.label : undefined}
+              className={`relative flex items-center ${
+                collapsed ? "justify-center px-0" : "gap-3 px-3"
+              } py-3.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-blue-100 text-blue-600 font-semibold"
-                  : "text-gray-600  "
+                  : "text-gray-600 hover:bg-gray-200"
               }`}
             >
               {isActive && (
-                <div className="absolute -left-4 top-0 h-full w-0.5 bg-blue-600"></div>
+                <div
+                  className={`absolute top-0 h-full w-1 bg-blue-600 rounded-r ${
+                    collapsed ? "left-0" : "-left-4"
+                  }`}
+                />
               )}
               <span
-                className={`shrink-0 text-lg ${isActive ? "text-blue-600" : "text-gray-500"}`}
+                className={`shrink-0 text-xl ${
+                  isActive ? "text-blue-600" : "text-gray-500"
+                }`}
               >
                 {item.icon}
               </span>
-              <span
-                className={`truncate ${isActive ? "text-blue-600" : "text-gray-500"}`}
-              >
-                {item.label}
-              </span>
+              {!collapsed && (
+                <span
+                  className={`truncate ${
+                    isActive ? "text-blue-600" : "text-gray-600"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              )}
             </Link>
           );
         })}
       </nav>
-      <div className="flex justify-between items-center">
-        <UserMiniProfile name="Nguyễn Văn A" role="Maker" showRole={true} />
-        <UiButton color="danger" variant="solid">
-          Đăng xuất
-        </UiButton>
+
+      {/* Footer: User Profile & Toggle Collapse Button */}
+      <div
+        className={`flex items-center pt-4 border-t border-gray-200 transition-all ${
+          collapsed ? "flex-col gap-3 justify-center" : "justify-between px-1"
+        }`}
+      >
+        <UserMiniProfile
+          name="Nguyễn Văn A"
+          role="Maker"
+          showRole={true}
+          collapsed={collapsed}
+        />
+        <UiButton
+          type="text"
+          icon={collapsed ? <DoubleRightOutlined /> : <DoubleLeftOutlined />}
+          onClick={() => setCollapsed((prev) => !prev)}
+          className="text-gray-500 hover:text-gray-700 shrink-0"
+        />
       </div>
-    </div>
+    </aside>
   );
 };
 
