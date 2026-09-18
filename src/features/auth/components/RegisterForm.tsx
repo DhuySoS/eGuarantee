@@ -3,7 +3,7 @@ import UiInput from "@/components/ui/atoms/UiInput";
 import UiInputField from "@/components/ui/molecules/UiInputField";
 import { IdcardOutlined, LockFilled, UserOutlined } from "@ant-design/icons";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createRegisterSchema,
@@ -18,7 +18,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   const registerSchema = createRegisterSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({
@@ -46,34 +46,55 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
         required
         error={errors.username?.message}
       >
-        <UiInput
-          type="text"
-          prefixIcon={<UserOutlined />}
-          placeholder="Nhập tên đăng nhập (vd: maker01)"
-          hasError={Boolean(errors.username)}
-          {...register("username")}
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <UiInput
+              {...field}
+              type="text"
+              prefix={<UserOutlined />}
+              placeholder="Nhập tên đăng nhập (vd: maker01)"
+              hasError={Boolean(errors.username)}
+              className="h-11"
+            />
+          )}
         />
       </UiInputField>
 
       {/* Full Name Field */}
       <UiInputField label="Họ và tên" required error={errors.fullName?.message}>
-        <UiInput
-          type="text"
-          prefixIcon={<IdcardOutlined />}
-          placeholder="Nhập họ và tên (vd: Nguyen Van Maker)"
-          hasError={Boolean(errors.fullName)}
-          {...register("fullName")}
+        <Controller
+          name="fullName"
+          control={control}
+          render={({ field }) => (
+            <UiInput
+              {...field}
+              type="text"
+              prefix={<IdcardOutlined />}
+              placeholder="Nhập họ và tên (vd: Nguyen Van Maker)"
+              hasError={Boolean(errors.fullName)}
+              className="h-11"
+            />
+          )}
         />
       </UiInputField>
 
       {/* Password Field */}
       <UiInputField label="Mật khẩu" required error={errors.password?.message}>
-        <UiInput
-          type="password"
-          prefixIcon={<LockFilled />}
-          placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
-          hasError={Boolean(errors.password)}
-          {...register("password")}
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <UiInput
+              {...field}
+              type="password"
+              prefix={<LockFilled />}
+              placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+              hasError={Boolean(errors.password)}
+              className="h-11"
+            />
+          )}
         />
       </UiInputField>
 

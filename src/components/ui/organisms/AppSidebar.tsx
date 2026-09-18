@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import UserMiniProfile from "../molecules/UserMiniProfile";
 import UiButton from "../atoms/UiButton";
+import { useAuth } from "@/features/auth/context/AuthContext";
 
 interface NavItem {
   key: string;
@@ -54,6 +55,8 @@ const NAV_ITEMS: NavItem[] = [
 const AppSidebar = () => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+
+  const { user } = useAuth();
 
   return (
     <aside
@@ -123,8 +126,8 @@ const AppSidebar = () => {
         }`}
       >
         <UserMiniProfile
-          name="Nguyễn Văn A"
-          role="Maker"
+          name={user?.username || "Người dùng"}
+          role={user?.role || "MAKER"}
           showRole={true}
           collapsed={collapsed}
         />

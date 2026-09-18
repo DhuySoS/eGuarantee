@@ -14,3 +14,15 @@ export const getAvatarText = (name?: string): string => {
 
   return `${firstChar}${lastChar}`.toUpperCase();
 };
+
+export const formatCurrency = (
+  amount?: number | null,
+  currency: string = "VND",
+): string => {
+  if (amount === undefined || amount === null || isNaN(amount)) {
+    return "-";
+  }
+
+  const formatted = new Intl.NumberFormat("vi-VN").format(amount);
+  return `${formatted} ${currency}`.trim();
+};

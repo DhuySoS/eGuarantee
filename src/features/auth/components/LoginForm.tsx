@@ -3,12 +3,13 @@ import UiInput from "@/components/ui/atoms/UiInput";
 import UiInputField from "@/components/ui/molecules/UiInputField";
 import { LockFilled, UserOutlined } from "@ant-design/icons";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createLoginSchema,
   type LoginFormData,
 } from "@/features/auth/schemas/LoginSchema";
+import { useLogin } from "../hooks/useLogin";
 
 interface LoginFormProps {
   onSwitchToRegister?: () => void;
@@ -16,9 +17,10 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
   const loginSchema = createLoginSchema();
+  const { mutate: login, isPending } = useLogin();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
@@ -30,7 +32,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    console.log("Login data:", data);
+    console.log("Submit login data:", data);
+    login(data);
   };
 
   return (
@@ -44,12 +47,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
         required
         error={errors.username?.message}
       >
-        <UiInput
-          type="text"
-          prefixIcon={<UserOutlined />}
-          placeholder="Nhập tên đăng nhập"
-          hasError={Boolean(errors.username)}
-          {...register("username")}
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <UiInput
+              {...field}
+              type="text"
+              prefix={<UserOutlined />}
+              placeholder="Nhập tên đăng nhập"
+              hasError={Boolean(errors.username)}
+              className="h-11"
+            />
+          )}
         />
       </UiInputField>
 
@@ -64,12 +74,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
           </p>
         }
       >
-        <UiInput
-          type="password"
-          prefixIcon={<LockFilled />}
-          placeholder="Nhập mật khẩu"
-          hasError={Boolean(errors.password)}
-          {...register("password")}
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <UiInput
+              {...field}
+              type="password"
+              prefix={<LockFilled />}
+              placeholder="Nhập mật khẩu"
+              hasError={Boolean(errors.password)}
+              className="h-11"
+            />
+          )}
         />
       </UiInputField>
 
@@ -77,6 +94,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
       <UiButton
         type="primary"
         htmlType="submit"
+        loading={isPending}
         className="w-full h-11 text-base font-semibold mt-2"
       >
         Đăng nhập

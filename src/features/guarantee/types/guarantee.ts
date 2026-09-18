@@ -68,12 +68,12 @@ export type GuaranteeListItem = Pick<
   | "id"
   | "customerCif"
   | "customerName"
+  | "taxCode"
+  | "status"
   | "guaranteeType"
   | "guaranteeAmount"
   | "currency"
   | "createdDate"
-  | "createdBy"
-  | "status"
 >;
 
 export interface GuaranteeQueryParams {
@@ -88,17 +88,24 @@ export interface GuaranteeQueryParams {
   sortDirection?: "asc" | "desc";
 }
 
-export interface PaginationMeta {
+export interface PageData<T> {
+  content: T[];
   page: number;
   size: number;
   totalElements: number;
   totalPages: number;
+  last: boolean;
 }
 
-export interface GuaranteeListResponse {
-  data: GuaranteeListItem[];
-  pagination: PaginationMeta;
+export interface ApiResponse<T> {
+  success: boolean;
+  code: string;
+  message: string;
+  data: T;
+  timestamp: string;
 }
+
+export type GuaranteeListResponse = ApiResponse<PageData<GuaranteeListItem>>;
 
 export interface ApiFieldError {
   field: string;

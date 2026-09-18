@@ -1,5 +1,6 @@
 import UiButton from "@/components/ui/atoms/UiButton";
 import PageContainer from "@/components/ui/organisms/PageContainer";
+import ListView from "@/features/guarantee/components/list/ListView";
 import Link from "next/link";
 
 const GuaranteeListPage = () => {
@@ -22,7 +23,7 @@ const GuaranteeListPage = () => {
         },
       ]}
     >
-      <div className="min-h-screen">Content</div>
+      <ListView />
     </PageContainer>
   );
 };

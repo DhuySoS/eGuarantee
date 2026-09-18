@@ -15,14 +15,21 @@ export const GUARANTEE_STATUS: Record<GuaranteeStatus, GuaranteeStatus> = {
 
 export const GUARANTEE_STATUS_LABELS: Record<GuaranteeStatus, string> = {
   DRAFT: "Bản nháp",
-  PENDING_APPROVAL: "Chờ phê duyệt",
-  APPROVED: "Đã phê duyệt",
+  PENDING_APPROVAL: "Chờ duyệt",
+  APPROVED: "Đã duyệt",
   REJECTED: "Từ chối",
 };
 
 export const GUARANTEE_STATUS_COLORS: Record<GuaranteeStatus, string> = {
   DRAFT: "default",
-  PENDING_APPROVAL: "processing",
+  PENDING_APPROVAL: "warning",
+  APPROVED: "success",
+  REJECTED: "error",
+};
+
+export const GUARANTEE_STATUS_TAG_CLASS: Record<GuaranteeStatus, string> = {
+  DRAFT: "default",
+  PENDING_APPROVAL: "warning",
   APPROVED: "success",
   REJECTED: "error",
 };
@@ -68,3 +75,17 @@ export const HISTORY_ACTION_LABELS: Record<HistoryAction, string> = {
   APPROVE: "Phê duyệt",
   REJECT: "Từ chối",
 };
+
+export const GUARANTEE_STATUS_OPTIONS = Object.entries(
+  GUARANTEE_STATUS_LABELS,
+).map(([value, label]) => ({
+  value,
+  label,
+}));
+
+export const GUARANTEE_TYPE_OPTIONS = Object.entries(GUARANTEE_TYPE_LABELS).map(
+  ([value, label]) => ({
+    value,
+    label,
+  }),
+);
