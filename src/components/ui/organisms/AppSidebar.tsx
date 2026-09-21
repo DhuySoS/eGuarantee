@@ -14,12 +14,15 @@ import React, { useState } from "react";
 import UserMiniProfile from "../molecules/UserMiniProfile";
 import UiButton from "../atoms/UiButton";
 import { useAuth } from "@/features/auth/context/AuthContext";
+import { useRole } from "@/features/auth/hooks/useRole";
+import type { UserRole } from "@/features/guarantee/types/guarantee";
 
 interface NavItem {
   key: string;
   label: string;
   href?: string;
   icon: React.ReactNode;
+  roles?: UserRole[];
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -34,10 +37,12 @@ const NAV_ITEMS: NavItem[] = [
     label: "Tạo yêu cầu",
     href: "/guarantees/create",
     icon: <PlusCircleOutlined />,
+    roles: ["MAKER"],
   },
   {
     key: "customers",
     label: "Quản lý khách hàng",
+    href: "/customers",
     icon: <TeamOutlined />,
   },
   {
@@ -57,6 +62,11 @@ const AppSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const { user } = useAuth();
+  const { hasRole } = useRole();
+
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !item.roles || hasRole(item.roles)
+  );
 
   return (
     <aside
@@ -65,7 +75,7 @@ const AppSidebar = () => {
       }`}
     >
       <nav className="flex flex-col gap-2">
-        {NAV_ITEMS.map((item) => {
+        {visibleNavItems.map((item) => {
           const isCreateOrEdit =
             pathname === "/guarantees/create" || pathname.includes("/edit");
 

@@ -1,4 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import { jwtDecode } from "jwt-decode";
 import type { ApiErrorResponse } from "@/features/guarantee/types/guarantee";
 import { getFallbackErrorMessage } from "@/utils/error";
 
@@ -10,10 +11,54 @@ export const apiClient = axios.create({
   timeout: 15000,
 });
 
+// Kiểm tra token sắp hết hạn (trước 60 giây) hoặc đã hết hạn
+const isTokenExpiringSoon = (token: string, bufferSeconds = 60): boolean => {
+  try {
+    const decoded = jwtDecode<{ exp: number }>(token);
+    if (!decoded.exp) return true;
+    return decoded.exp * 1000 - bufferSeconds * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
+
 apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  async (config: InternalAxiosRequestConfig) => {
     if (typeof window !== "undefined") {
-      const accessToken = localStorage.getItem("access_token");
+      let accessToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      const isAuthUrl =
+        config.url?.includes("/auth/login") ||
+        config.url?.includes("/auth/refresh-token") ||
+        config.url?.includes("/auth/register");
+
+      // Nếu token sắp hết hạn trong 60 giây tới, tự động refresh trước khi gửi request
+      if (
+        accessToken &&
+        refreshToken &&
+        !isAuthUrl &&
+        isTokenExpiringSoon(accessToken)
+      ) {
+        try {
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh-token`,
+            { refreshToken },
+          );
+          const data = res.data?.data ?? res.data;
+          if (data?.accessToken) {
+            accessToken = data.accessToken;
+            localStorage.setItem("access_token", data.accessToken);
+            if (data.refreshToken) {
+              localStorage.setItem("refresh_token", data.refreshToken);
+            }
+          }
+        } catch {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+        }
+      }
+
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -21,7 +66,6 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("[API Request Error]:", error);
     return Promise.reject(error);
   },
 );
@@ -30,8 +74,6 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiErrorResponse>) => {
     const status = error.response?.status;
-    const requestUrl = error.config?.url || "Unknown URL";
-    const method = error.config?.method?.toUpperCase() || "GET";
 
     let apiError: ApiErrorResponse;
 
@@ -44,7 +86,6 @@ apiClient.interceptors.response.use(
         errors: error.response.data.errors,
       };
     } else {
-      // Lỗi Network hoặc Server không phản hồi
       apiError = {
         timestamp: new Date().toISOString(),
         status: status || 500,
@@ -56,14 +97,11 @@ apiClient.interceptors.response.use(
     // Xử lý 401: Xóa token khi hết hạn phiên đăng nhập
     if (status === 401 && typeof window !== "undefined") {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      if (window.location.pathname !== "/auth") {
+        window.location.href = "/auth";
+      }
     }
-
-    // Log chi tiết lỗi ra console phục vụ kiểm tra và debug
-    console.error(
-      `[API Error] [${method}] ${requestUrl} - Status ${apiError.status} (${apiError.code}):`,
-      apiError.message,
-      apiError.errors || "",
-    );
 
     return Promise.reject(apiError);
   },

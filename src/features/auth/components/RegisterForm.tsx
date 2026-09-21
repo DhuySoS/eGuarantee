@@ -9,6 +9,7 @@ import {
   createRegisterSchema,
   type RegisterFormData,
 } from "@/features/auth/schemas/RegisterSchema";
+import { useRegister } from "../hooks/useRegister";
 
 interface RegisterFormProps {
   onSwitchToLogin?: () => void;
@@ -16,6 +17,11 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   const registerSchema = createRegisterSchema();
+  const { mutate: register, isPending } = useRegister({
+    onSuccess: () => {
+      onSwitchToLogin?.();
+    },
+  });
 
   const {
     control,
@@ -27,12 +33,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       username: "",
       fullName: "",
       password: "",
-      role: "MAKER",
     },
   });
 
   const onSubmit = (data: RegisterFormData) => {
-    console.log("Register data:", data);
+    register(data);
   };
 
   return (
@@ -102,6 +107,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       <UiButton
         type="primary"
         htmlType="submit"
+        loading={isPending}
         className="w-full h-11 text-base font-semibold mt-2"
       >
         Đăng ký

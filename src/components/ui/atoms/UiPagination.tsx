@@ -11,7 +11,7 @@ export const UiPagination: React.FC<UiPaginationProps> = ({
   className = "",
   locale = { items_per_page: "/ trang" },
   showSizeChanger = true,
-  pageSizeOptions = ["10", "20", "50"],
+  pageSizeOptions = ["5", "10", "20"],
   ...props
 }) => {
   return (

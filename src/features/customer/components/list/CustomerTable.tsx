@@ -4,62 +4,68 @@ import React, { useMemo } from "react";
 import UiTable from "@/components/ui/atoms/UiTable";
 import UiPagination from "@/components/ui/atoms/UiPagination";
 import type { TableProps } from "antd";
-import UiButton from "@/components/ui/atoms/UiButton";
-import { WarningOutlined } from "@ant-design/icons";
-import type { GuaranteeListItem, UserRole } from "../../types/guarantee";
+import type { Customer } from "../../types/customer";
 import {
-  getGuaranteeColumns,
-  type SortableGuaranteeField,
-} from "./guaranteeColumn";
+  getCustomerColumns,
+  type SortableCustomerField,
+} from "./customerColumns";
 
-export interface GuaranteeTableProps {
-  data?: GuaranteeListItem[];
+export interface CustomerTableProps {
+  data?: Customer[];
   loading?: boolean;
   total?: number;
   currentPage?: number;
   pageSize?: number;
-  sortBy?: SortableGuaranteeField;
+  sortBy?: SortableCustomerField;
   sortDirection?: "asc" | "desc";
-  role?: UserRole;
-  onDelete?: (record: GuaranteeListItem) => void;
+  onView?: (record: Customer) => void;
+  onEdit?: (record: Customer) => void;
+  onDelete?: (record: Customer) => void;
   onPageChange?: (page: number, pageSize: number) => void;
   onSortChange?: (
-    sortBy: SortableGuaranteeField,
+    sortBy: SortableCustomerField,
     sortDirection: "asc" | "desc",
   ) => void;
 }
 
-const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
+const CustomerTable: React.FC<CustomerTableProps> = ({
   data = [],
   loading = false,
   total = 0,
-  currentPage = 0,
+  currentPage = 1,
   pageSize = 5,
   sortBy,
   sortDirection,
-  role = "MAKER",
+  onView,
+  onEdit,
   onDelete,
   onPageChange,
   onSortChange,
 }) => {
   const columns = useMemo(
-    () => getGuaranteeColumns({ sortBy, sortDirection, role, onDelete }),
-    [sortBy, sortDirection, role, onDelete],
+    () =>
+      getCustomerColumns({
+        sortBy,
+        sortDirection,
+        onView,
+        onEdit,
+        onDelete,
+      }),
+    [sortBy, sortDirection, onView, onEdit, onDelete],
   );
 
-  const handleTableChange: TableProps<GuaranteeListItem>["onChange"] = (
+  const handleTableChange: TableProps<Customer>["onChange"] = (
     _pagination,
     _filters,
     sorter,
   ) => {
     const s = Array.isArray(sorter) ? sorter[0] : sorter;
     if (s && s.order && s.field) {
-      const field = s.field as SortableGuaranteeField;
+      const field = s.field as SortableCustomerField;
       const direction = s.order === "ascend" ? "asc" : "desc";
       onSortChange?.(field, direction);
     } else {
-      // Khi click bỏ sort thì trở về sắp xếp mặc định theo ngày tạo mới nhất
-      onSortChange?.("createdDate", "desc");
+      onSortChange?.("cif", "desc");
     }
   };
 
@@ -67,22 +73,22 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
     <div className="space-y-4">
       <div className="text-base text-gray-800">
         Tổng số: <span className="font-semibold text-gray-900">{total}</span>{" "}
-        yêu cầu
+        khách hàng
       </div>
-      <div className="bg-white rounded-xl overflow-hidden shadow-xs">
-        <UiTable<GuaranteeListItem>
-          rowKey="id"
+      <div className="bg-white rounded-xl overflow-hidden shadow-xs border border-gray-100">
+        <UiTable<Customer>
+          rowKey="cif"
           columns={columns}
           dataSource={data}
           loading={loading}
           bordered
           pagination={false}
-          scroll={{ x: 900 }}
+          scroll={{ x: 800 }}
           onChange={handleTableChange}
         />
       </div>
 
-      {/* Phân trang bên dưới */}
+      {/* Phân trang */}
       <div className="flex items-center justify-between pt-2">
         <div className="flex-1 flex justify-center">
           <UiPagination
@@ -113,4 +119,4 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
   );
 };
 
-export default GuaranteeTable;
+export default CustomerTable;

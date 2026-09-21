@@ -24,7 +24,7 @@ export default function MainLayout({
   if (isLoading) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-gray-50">
-        <Spin size="large" tip="Đang kiểm tra phiên đăng nhập..." />
+        <Spin size="large" description="Đang kiểm tra phiên đăng nhập..." />
       </div>
     );
   }

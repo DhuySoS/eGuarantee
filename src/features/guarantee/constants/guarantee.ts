@@ -89,3 +89,10 @@ export const GUARANTEE_TYPE_OPTIONS = Object.entries(GUARANTEE_TYPE_LABELS).map(
     label,
   }),
 );
+
+//TrinhTV6
+// Danh sách Options chọn loại tiền tệ
+export const CURRENCY_OPTIONS: { value: Currency; label: string }[] = [
+  { value: "VND", label: "VND" },
+  { value: "USD", label: "USD" },
+];

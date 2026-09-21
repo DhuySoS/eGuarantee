@@ -35,9 +35,9 @@ const PageContainer: React.FC<PageContainerProps> = ({
                   {title}
                 </h1>
                 {subTitle && (
-                  <p className="mt-2 text-md font-medium text-gray-500">
+                  <div className="mt-2 text-md font-medium text-gray-500">
                     {subTitle}
-                  </p>
+                  </div>
                 )}
               </div>
             </div>

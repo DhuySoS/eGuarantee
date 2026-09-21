@@ -2,6 +2,7 @@ import apiClient from "@/lib/axios";
 import type {
   Guarantee,
   GuaranteeListItem,
+  GuaranteeListResult,
   GuaranteeQueryParams,
   CreateGuaranteePayload,
   UpdateGuaranteePayload,
@@ -9,28 +10,36 @@ import type {
   ProcessingHistory,
   PageData,
   ApiResponse,
+  Customer,
 } from "../types/guarantee";
 
 export const guaranteeService = {
-  /**
-   * 1. Tra cứu danh sách bảo lãnh kèm bộ lọc, sắp xếp và phân trang
-   * GET /guarantees
-   */
   async getGuarantees(
     params?: GuaranteeQueryParams,
-  ): Promise<PageData<GuaranteeListItem>> {
-    const response = await apiClient.get<
-      ApiResponse<PageData<GuaranteeListItem>> | PageData<GuaranteeListItem>
-    >("/guarantees", { params });
+  ): Promise<GuaranteeListResult> {
+    const response = await apiClient.get<any>("/guarantees", { params });
+    const res = response.data;
 
-    const resData = response.data as any;
-    return resData?.data ?? resData;
+    if (res?.data?.content && Array.isArray(res.data.content)) {
+      return {
+        items: res.data.content,
+        total: res.data.totalElements ?? res.data.content.length,
+        page: res.data.page ?? 0,
+        size: res.data.size ?? 10,
+        totalPages: res.data.totalPages ?? 1,
+        last: res.data.last ?? false,
+      };
+    }
+    return {
+      items: [],
+      total: 0,
+      page: 0,
+      size: 10,
+      totalPages: 0,
+      last: true,
+    };
   },
 
-  /**
-   * 2. Xem chi tiết hồ sơ bảo lãnh theo ID
-   * GET /guarantees/:id
-   */
   async getGuaranteeById(id: string): Promise<Guarantee> {
     const response = await apiClient.get<ApiResponse<Guarantee> | Guarantee>(
       `/guarantees/${id}`,
@@ -39,10 +48,6 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 3. Khởi tạo yêu cầu bảo lãnh (DRAFT)
-   * POST /guarantees
-   */
   async createGuarantee(payload: CreateGuaranteePayload): Promise<Guarantee> {
     const response = await apiClient.post<ApiResponse<Guarantee> | Guarantee>(
       "/guarantees",
@@ -52,10 +57,6 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 4. Cập nhật thông tin yêu cầu bảo lãnh (DRAFT / REJECTED)
-   * PUT /guarantees/:id
-   */
   async updateGuarantee(
     id: string,
     payload: UpdateGuaranteePayload,
@@ -68,18 +69,10 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 5. Xóa yêu cầu bảo lãnh (Chỉ được xóa khi trạng thái là DRAFT)
-   * DELETE /guarantees/:id
-   */
   async deleteGuarantee(id: string): Promise<void> {
     await apiClient.delete(`/guarantees/${id}`);
   },
 
-  /**
-   * 6. Maker gửi yêu cầu sang Checker phê duyệt
-   * POST /guarantees/:id/submit
-   */
   async submitGuarantee(id: string): Promise<Guarantee> {
     const response = await apiClient.post<ApiResponse<Guarantee> | Guarantee>(
       `/guarantees/${id}/submit`,
@@ -88,10 +81,6 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 7. Checker phê duyệt yêu cầu (Chỉ khi status = PENDING_APPROVAL)
-   * POST /guarantees/:id/approve
-   */
   async approveGuarantee(id: string): Promise<Guarantee> {
     const response = await apiClient.post<ApiResponse<Guarantee> | Guarantee>(
       `/guarantees/${id}/approve`,
@@ -100,10 +89,6 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 8. Checker từ chối yêu cầu kèm lý do bắt buộc (10 - 500 ký tự)
-   * POST /guarantees/:id/reject
-   */
   async rejectGuarantee(
     id: string,
     payload: RejectGuaranteePayload,
@@ -116,16 +101,40 @@ export const guaranteeService = {
     return resData?.data ?? resData;
   },
 
-  /**
-   * 9. Lấy lịch sử xử lý (Processing History) của hồ sơ bảo lãnh
-   * GET /guarantees/:id/histories
-   */
   async getGuaranteeHistories(id: string): Promise<ProcessingHistory[]> {
     const response = await apiClient.get<
       ApiResponse<ProcessingHistory[]> | ProcessingHistory[]
     >(`/guarantees/${id}/histories`);
     const resData = response.data as any;
     return resData?.data ?? resData;
+  },
+
+  // api để lấy thông tin khách hàng
+  getCustomers: async (params?: {
+    page?: number;
+    size?: number;
+  }): Promise<Customer[]> => {
+    try {
+      const res: any = await apiClient.get("/customers", {
+        params: {
+          page: params?.page ?? 0,
+          size: params?.size ?? 100,
+        },
+      });
+      const content =
+        res?.data?.data?.content ??
+        res?.data?.content ??
+        (Array.isArray(res?.data?.data) ? res.data.data : null) ??
+        (Array.isArray(res?.data) ? res.data : null) ??
+        [];
+      return Array.isArray(content) ? content : [];
+    } catch (error) {
+      console.warn(
+        "[customerService] Lỗi kết nối API /customers, sử dụng danh sách mẫu:",
+        error,
+      );
+      return [];
+    }
   },
 };
 

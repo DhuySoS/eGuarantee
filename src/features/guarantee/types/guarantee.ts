@@ -19,8 +19,10 @@ export interface User {
 
 export interface ProcessingHistory {
   id: string;
+  guaranteeId: string;
   action: HistoryAction;
-  user: string;
+  performedBy: string;
+  performByFullName: string;
   role: UserRole;
   timestamp: string; // ISO string
   comment?: string;
@@ -34,6 +36,7 @@ export interface Guarantee {
   customerCif: string;
   customerName: string;
   taxCode?: string;
+  customerAddress?: string;
 
   // Guarantee Information
   guaranteeType: GuaranteeType;
@@ -43,6 +46,8 @@ export interface Guarantee {
   expiryDate: string; // YYYY-MM-DD
   guaranteeDays: number;
   tenderNumber?: string;
+  relatedContractNumber?: string;
+  referenceNumber?: string;
   purpose: string;
 
   // Beneficiary Information
@@ -55,12 +60,14 @@ export interface Guarantee {
 
   // Audit Information
   createdBy: string;
+  createdByFullName?: string;
   createdDate: string; // ISO string
   updatedBy?: string;
+  updatedByFullName?: string;
   updatedDate?: string; // ISO string
 
   // Histories
-  histories: ProcessingHistory[];
+  histories?: ProcessingHistory[];
 }
 
 export type GuaranteeListItem = Pick<
@@ -93,6 +100,15 @@ export interface PageData<T> {
   page: number;
   size: number;
   totalElements: number;
+  totalPages: number;
+  last: boolean;
+}
+
+export interface GuaranteeListResult {
+  items: GuaranteeListItem[];
+  total: number;
+  page: number;
+  size: number;
   totalPages: number;
   last: boolean;
 }
@@ -136,4 +152,11 @@ export type UpdateGuaranteePayload = Partial<CreateGuaranteePayload>;
 
 export interface RejectGuaranteePayload {
   reason: string;
+}
+
+export interface Customer {
+  cif: string;
+  customerName: string;
+  taxCode: string;
+  address?: string;
 }
