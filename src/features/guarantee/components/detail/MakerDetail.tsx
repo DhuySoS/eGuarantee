@@ -247,7 +247,9 @@ export default function MakerDetail({
 
                         <div className="mt-1 text-xs text-gray-500">
                           {history.timestamp
-                            ? dayjs(history.timestamp).format("DD/MM/YYYY")
+                            ? dayjs(history.timestamp).format(
+                                "DD/MM/YYYY HH:mm:ss",
+                              )
                             : "-"}
                         </div>
 
@@ -281,7 +283,8 @@ export default function MakerDetail({
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Ngày tạo">
-                  {dayjs(guarantee.createdDate).format("DD/MM/YYYY") || "-"}
+                  {dayjs(guarantee.createdDate).format("DD/MM/YYYY HH:mm:ss") ||
+                    "-"}
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Người tạo">
@@ -289,7 +292,8 @@ export default function MakerDetail({
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Cập nhật lần cuối">
-                  {dayjs(guarantee.updatedDate).format("DD/MM/YYYY") || "-"}
+                  {dayjs(guarantee.updatedDate).format("DD/MM/YYYY HH:mm:ss") ||
+                    "-"}
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Người cập nhật">

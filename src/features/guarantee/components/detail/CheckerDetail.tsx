@@ -214,7 +214,9 @@ export default function CheckerDetail({
                         </div>
 
                         {history.timestamp
-                          ? dayjs(history.timestamp).format("DD/MM/YYYY")
+                          ? dayjs(history.timestamp).format(
+                              "DD/MM/YYYY HH:mm:ss",
+                            )
                           : "-"}
 
                         {history.comment && (
@@ -249,7 +251,7 @@ export default function CheckerDetail({
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Ngày tạo">
-                  {dayjs(guarantee.createdDate).format("DD/MM/YYYY")}
+                  {dayjs(guarantee.createdDate).format("DD/MM/YYYY HH:mm:ss")}
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Người cập nhật">
@@ -257,7 +259,8 @@ export default function CheckerDetail({
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Ngày cập nhật">
-                  {dayjs(guarantee.updatedDate).format("DD/MM/YYYY") || "-"}
+                  {dayjs(guarantee.updatedDate).format("DD/MM/YYYY HH:mm:ss") ||
+                    "-"}
                 </Descriptions.Item>
               </Descriptions>
             </Card>

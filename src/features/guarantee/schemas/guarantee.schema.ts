@@ -56,14 +56,18 @@ export const guaranteeFormSchema = z
       .max(255),
     beneficiaryAddress: z.string().max(500).optional().or(z.literal("")),
     contactEmail: z
-      .string()
-      .nonempty("Email là bắt buộc")
-      .email("Email không đúng định dạng"),
+      .string({ message: "Email liên hệ là bắt buộc" })
+      .trim()
+      .min(1, "Email liên hệ là bắt buộc")
+      .regex(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Email không đúng định dạng (ví dụ: contact@company.com)",
+      ),
     phoneNumber: z
-      .string()
-      .regex(/^[0-9]{9,15}$/, "SĐT từ 9-15 số")
-      .optional()
-      .or(z.literal("")),
+      .string({ message: "Số điện thoại là bắt buộc" })
+      .trim()
+      .nonempty("Số điện thoại là bắt buộc")
+      .regex(/^[0-9]{10}$/, "Số điện thoại phải gồm đúng 10 chữ số"),
   })
   // Ngày hết hạn phải sau ngày hiệu lực
   .refine(
