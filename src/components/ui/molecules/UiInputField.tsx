@@ -18,10 +18,10 @@ const UiInputField = ({
   return (
     <div className={`flex flex-col gap-1.5 w-full ${className}`}>
       {/* Hàng Label: Tiêu đề bên trái, extraRight (Quên mật khẩu?) bên phải */}
-      <div className="flex justify-between items-center text-sm font-medium text-gray-700">
+      <div className="flex justify-between items-center text-sm font-medium text-gray-700 dark:text-gray-300">
         <label>
           {label}
-          {required && <span>*</span>}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </label>
         {extraRight}
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import LocaleSwitcher from "@/components/locale-switcher/LocaleSwitcher";
+import ThemeSwitcher from "@/components/theme-switcher/ThemeSwitcher";
 import LoginForm from "@/features/auth/components/LoginForm";
 import RegisterForm from "@/features/auth/components/RegisterForm";
 import { Suspense } from "react";
@@ -50,18 +51,19 @@ const AuthContent = () => {
 
         {/* Góc dưới: Chừa trống để cân đối layout */}
       </div>
-      <div className="flex-1 w-full h-screen bg-white rounded-l-[100px] border-l border-gray-100">
-        <div className="absolute top-0 right-0 px-12 py-4">
+      <div className="flex-1 w-full h-screen bg-white dark:bg-gray-900 rounded-l-[100px] border-l border-gray-100 dark:border-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <div className="absolute top-0 right-0 px-12 py-4 flex items-center gap-3">
+          <ThemeSwitcher />
           <LocaleSwitcher />
         </div>
         <div className="w-[60%] h-screen mx-auto flex flex-col justify-center items-start gap-4">
-          <p className="text-sm font-medium">
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
             {isLogin ? tLogin("welcomeBack") : tRegister("getStarted")}
           </p>
-          <p className="text-3xl font-semibold leading-tight">
+          <p className="text-3xl font-semibold leading-tight text-gray-900 dark:text-gray-100">
             {isLogin ? tLogin("title") : tRegister("title")}
           </p>
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             {isLogin ? tLogin("subtitle") : tRegister("subtitle")}
           </p>
 

@@ -37,8 +37,8 @@ const CustomerFilter: React.FC<CustomerFilterProps> = ({
   };
 
   return (
-    <div className="p-5 bg-gray-50 rounded-2xl space-y-4 border border-gray-200">
-      <p className="text-xl font-bold text-gray-800">{t("title")}</p>
+    <div className="p-5 bg-gray-50 dark:bg-gray-900 rounded-2xl space-y-4 border border-gray-200 dark:border-gray-800 transition-colors duration-200">
+      <p className="text-xl font-bold text-gray-800 dark:text-gray-100">{t("title")}</p>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <UiInputField label={t("keywordLabel")}>
           <UiInput

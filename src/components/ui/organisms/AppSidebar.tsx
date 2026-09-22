@@ -75,7 +75,7 @@ const AppSidebar = () => {
 
   return (
     <aside
-      className={`h-full shrink-0 flex flex-col justify-between bg-gray-100 border-r border-r-gray-200 transition-all duration-300 ease-in-out py-8 ${
+      className={`h-full shrink-0 flex flex-col justify-between bg-gray-100 dark:bg-gray-900 border-r border-r-gray-200 dark:border-r-gray-800 transition-all duration-300 ease-in-out py-8 ${
         collapsed ? "w-20 px-2" : "w-64 px-4"
       }`}
     >
@@ -104,20 +104,22 @@ const AppSidebar = () => {
                 collapsed ? "justify-center px-0" : "gap-3 px-3"
               } py-3.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-blue-100 text-blue-600 font-semibold"
-                  : "text-gray-600 hover:bg-gray-200"
+                  ? "bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800"
               }`}
             >
               {isActive && (
                 <div
-                  className={`absolute top-0 h-full w-1 bg-blue-600 rounded-r ${
+                  className={`absolute top-0 h-full w-1 bg-blue-600 dark:bg-blue-500 rounded-r ${
                     collapsed ? "left-0" : "-left-4"
                   }`}
                 />
               )}
               <span
                 className={`shrink-0 text-xl ${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-gray-500 dark:text-gray-400"
                 }`}
               >
                 {item.icon}
@@ -125,7 +127,9 @@ const AppSidebar = () => {
               {!collapsed && (
                 <span
                   className={`truncate ${
-                    isActive ? "text-blue-600" : "text-gray-600"
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   {label}
@@ -138,7 +142,7 @@ const AppSidebar = () => {
 
       {/* Footer: User Profile & Toggle Collapse Button */}
       <div
-        className={`flex items-center pt-4 border-t border-gray-200 transition-all ${
+        className={`flex items-center pt-4 border-t border-gray-200 dark:border-gray-800 transition-all ${
           collapsed ? "flex-col gap-3 justify-center" : "justify-between px-1"
         }`}
       >

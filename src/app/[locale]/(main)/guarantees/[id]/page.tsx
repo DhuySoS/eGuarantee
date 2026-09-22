@@ -39,7 +39,7 @@ const GuaranteeDetailPage = () => {
       title={t("detail.title")}
       subTitle={
         <div className="flex gap-2">
-          <span className="text-gray-900 font-bold">{id}</span>{" "}
+          <span className="text-gray-900 dark:text-gray-100 font-bold">{id}</span>{" "}
           <Tag
             className="  font-bold "
             color={GUARANTEE_STATUS_TAG_CLASS[guarantee.status]}

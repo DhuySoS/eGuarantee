@@ -100,7 +100,7 @@ export const getGuaranteeColumns = (
       title: t ? t("table.columns.cif") : "CIF",
       dataIndex: "customerCif",
       key: "customerCif",
-      className: "text-gray-700",
+      className: "text-gray-700 dark:text-gray-300",
     },
     {
       title: t ? t("table.columns.guaranteeType") : "Loại bảo lãnh",
@@ -132,7 +132,7 @@ export const getGuaranteeColumns = (
           : "Nhấp để sắp xếp theo ngày tạo",
       },
       render: (date: string) => (
-        <span className="text-gray-700">
+        <span className="text-gray-700 dark:text-gray-300">
           {dayjs(date).format("DD/MM/YYYY")}
         </span>
       ),

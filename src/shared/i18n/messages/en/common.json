@@ -26,7 +26,11 @@
     "title": "Guarantee Portal",
     "logout": "Log out",
     "loggingOut": "Logging out...",
-    "checkingSession": "Checking session..."
+    "checkingSession": "Checking session...",
+    "themeLight": "Switch to light mode",
+    "themeDark": "Switch to dark mode",
+    "theme": "Theme",
+    "language": "Language"
   },
   "breadcrumbs": {
     "home": "Home",

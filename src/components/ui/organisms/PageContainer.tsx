@@ -31,11 +31,11 @@ const PageContainer: React.FC<PageContainerProps> = ({
           <div className="px-6 py-4 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div>
-                <h1 className="text-4xl font-bold text-gray-900 leading-tight">
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
                   {title}
                 </h1>
                 {subTitle && (
-                  <div className="mt-2 text-md font-medium text-gray-500">
+                  <div className="mt-2 text-md font-medium text-gray-500 dark:text-gray-400">
                     {subTitle}
                   </div>
                 )}

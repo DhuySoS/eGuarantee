@@ -9,6 +9,8 @@ import {
   type TableColumnType,
 } from "antd";
 
+import { useTheme } from "@/providers/ThemeProvider";
+
 export interface UiTableProps<RecordType = any> extends TableProps<RecordType> {
   className?: string;
   headerBg?: string;
@@ -17,18 +19,25 @@ export interface UiTableProps<RecordType = any> extends TableProps<RecordType> {
 
 export function UiTable<RecordType extends object = any>({
   className = "",
-  headerBg = "#F4F7FB",
-  headerColor = "#1F2937",
+  headerBg,
+  headerColor,
   ...props
 }: UiTableProps<RecordType>) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  const resolvedHeaderBg = headerBg ?? (isDark ? "#1f1f1f" : "#F4F7FB");
+  const resolvedHeaderColor = headerColor ?? (isDark ? "#f3f4f6" : "#1F2937");
+  const resolvedBorderColor = isDark ? "#303030" : "#E5E7EB";
+
   return (
     <ConfigProvider
       theme={{
         components: {
           Table: {
-            headerBg,
-            headerColor,
-            borderColor: "#E5E7EB",
+            headerBg: resolvedHeaderBg,
+            headerColor: resolvedHeaderColor,
+            borderColor: resolvedBorderColor,
           },
         },
       }}

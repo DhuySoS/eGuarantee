@@ -26,7 +26,11 @@
     "title": "Guarantee Portal",
     "logout": "Đăng xuất",
     "loggingOut": "Đang đăng xuất...",
-    "checkingSession": "Đang kiểm tra phiên đăng nhập..."
+    "checkingSession": "Đang kiểm tra phiên đăng nhập...",
+    "themeLight": "Chuyển sang giao diện sáng",
+    "themeDark": "Chuyển sang giao diện tối",
+    "theme": "Giao diện",
+    "language": "Ngôn ngữ"
   },
   "breadcrumbs": {
     "home": "Trang chủ",

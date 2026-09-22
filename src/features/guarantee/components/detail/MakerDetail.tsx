@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useMemo } from "react";
 import { Card, Col, Descriptions, Row, Tag, Timeline } from "antd";
 import { GUARANTEE_STATUS_TAG_CLASS } from "../../constants/guarantee";
 import type { Guarantee, ProcessingHistory } from "../../types/guarantee";
@@ -7,6 +8,7 @@ import type { Guarantee, ProcessingHistory } from "../../types/guarantee";
 import MakerActions from "./MakerActions";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@/providers/ThemeProvider";
 
 interface GuaranteeDetailProps {
   guarantee: Guarantee;
@@ -37,31 +39,9 @@ const ROLE_LABELS: Record<string, string> = {
   CHECKER: "Checker",
 };
 
-const CARD_STYLES = {
-  header: {
-    backgroundColor: "#f3f4f6",
-    padding: "12px 16px",
-  },
-  body: {
-    padding: "16px",
-  },
-};
-
 const CARD_STYLE = {
   width: "auto",
   margin: "0px 10px 0px 20px",
-};
-
-const DESCRIPTION_STYLES = {
-  label: {
-    width: "260px",
-    paddingRight: "8px",
-    paddingLeft: "10px",
-    fontWeight: 500,
-  },
-  content: {
-    paddingLeft: "4px",
-  },
 };
 
 export default function MakerDetail({
@@ -74,6 +54,39 @@ export default function MakerDetail({
 }: GuaranteeDetailProps) {
   const t = useTranslations("guarantees");
   const tCommon = useTranslations("common");
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  const cardStyles = useMemo(
+    () => ({
+      header: {
+        backgroundColor: isDark ? "#1f1f1f" : "#f3f4f6",
+        borderBottom: isDark ? "1px solid #303030" : "1px solid #e5e7eb",
+        padding: "12px 16px",
+      },
+      body: {
+        padding: "16px",
+      },
+    }),
+    [isDark],
+  );
+
+  const descriptionStyles = useMemo(
+    () => ({
+      label: {
+        width: "260px",
+        paddingRight: "8px",
+        paddingLeft: "10px",
+        fontWeight: 500,
+        color: isDark ? "#9ca3af" : "#4b5563",
+      },
+      content: {
+        paddingLeft: "4px",
+        color: isDark ? "#f3f4f6" : "#111827",
+      },
+    }),
+    [isDark],
+  );
   const guaranteeTypeLabel = t.has(`types.${guarantee.guaranteeType}`)
     ? t(`types.${guarantee.guaranteeType}`)
     : GUARANTEE_TYPE_LABELS[guarantee.guaranteeType] ?? guarantee.guaranteeType;
@@ -96,9 +109,9 @@ export default function MakerDetail({
               title={t("form.sections.customerInfo")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
+              <Descriptions column={1} size="small" styles={descriptionStyles}>
                 <Descriptions.Item label={t("detail.labels.customerName")}>
                   {guarantee.customerName || "-"}
                 </Descriptions.Item>
@@ -123,9 +136,9 @@ export default function MakerDetail({
               title={t("form.sections.guaranteeInfo")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
+              <Descriptions column={1} size="small" styles={descriptionStyles}>
                 <Descriptions.Item label={t("detail.labels.guaranteeType")}>
                   {guaranteeTypeLabel}
                 </Descriptions.Item>
@@ -169,9 +182,9 @@ export default function MakerDetail({
               title={t("detail.sections.beneficiaryInfo")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
+              <Descriptions column={1} size="small" styles={descriptionStyles}>
                 <Descriptions.Item label={t("detail.labels.beneficiaryName")}>
                   {guarantee.beneficiaryName || "-"}
                 </Descriptions.Item>
@@ -188,9 +201,9 @@ export default function MakerDetail({
               title={t("detail.sections.beneficiaryInfo")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
+              <Descriptions column={1} size="small" styles={descriptionStyles}>
                 <Descriptions.Item label={t("detail.labels.contactEmail")}>
                   {guarantee.contactEmail || "-"}
                 </Descriptions.Item>
@@ -207,9 +220,9 @@ export default function MakerDetail({
               title={t("detail.labels.purpose")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <div className="text-sm leading-6 text-gray-700">
+              <div className="text-sm leading-6 text-gray-700 dark:text-gray-200">
                 {guarantee.purpose || "-"}
               </div>
             </Card>
@@ -226,10 +239,10 @@ export default function MakerDetail({
               title={t("detail.sections.history")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
               {histories.length === 0 ? (
-                <div className="py-4 text-sm text-gray-500">
+                <div className="py-4 text-sm text-gray-500 dark:text-gray-400">
                   {t("detail.labels.noHistory")}
                 </div>
               ) : (
@@ -237,11 +250,11 @@ export default function MakerDetail({
                   items={histories.map((history) => ({
                     content: (
                       <div className="pb-4">
-                        <div className="font-semibold text-gray-900">
+                        <div className="font-semibold text-gray-900 dark:text-gray-100">
                           {history.action}
                         </div>
 
-                        <div className="mt-1 text-sm text-gray-600">
+                        <div className="mt-1 text-sm text-gray-600 dark:text-gray-300">
                           {history.performByFullName ||
                             history.performedBy ||
                             "-"}
@@ -251,7 +264,7 @@ export default function MakerDetail({
                           {ROLE_LABELS[history.role] ?? history.role ?? "-"}
                         </div>
 
-                        <div className="mt-1 text-xs text-gray-500">
+                        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                           {history.timestamp
                             ? dayjs(history.timestamp).format(
                                 "DD/MM/YYYY HH:mm:ss",
@@ -260,7 +273,7 @@ export default function MakerDetail({
                         </div>
 
                         {history.comment && (
-                          <div className="mt-2 rounded bg-gray-50 p-2 text-sm text-gray-700">
+                          <div className="mt-2 rounded bg-gray-50 dark:bg-gray-800 p-2 text-sm text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
                             {history.comment}
                           </div>
                         )}
@@ -277,9 +290,9 @@ export default function MakerDetail({
               title={t("detail.sections.generalInfo")}
               variant="outlined"
               style={CARD_STYLE}
-              styles={CARD_STYLES}
+              styles={cardStyles}
             >
-              <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
+              <Descriptions column={1} size="small" styles={descriptionStyles}>
                 <Descriptions.Item label={t("detail.labels.requestId")}>
                   {guarantee.id}
                 </Descriptions.Item>
@@ -315,7 +328,7 @@ export default function MakerDetail({
                 title={t("detail.labels.reason")}
                 variant="outlined"
                 style={CARD_STYLE}
-                styles={CARD_STYLES}
+                styles={cardStyles}
               >
                 {(() => {
                   const rejectHistory = [...histories]
@@ -326,7 +339,7 @@ export default function MakerDetail({
                     );
 
                   return (
-                    <div className="text-sm leading-6 text-gray-700">
+                    <div className="text-sm leading-6 text-gray-700 dark:text-gray-200">
                       {rejectHistory?.comment || "-"}
                     </div>
                   );

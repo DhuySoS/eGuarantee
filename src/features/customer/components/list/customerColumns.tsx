@@ -40,7 +40,9 @@ export const getCustomerColumns = (
       dataIndex: "customerName",
       key: "customerName",
       render: (name: string) => (
-        <span className="font-medium text-gray-900">{name}</span>
+        <span className="font-medium text-gray-900 dark:text-gray-100">
+          {name}
+        </span>
       ),
     },
     {
@@ -49,7 +51,7 @@ export const getCustomerColumns = (
       key: "taxCode",
       width: 200,
       render: (taxCode: string) => (
-        <span className="text-gray-700 font-mono text-sm">
+        <span className="text-gray-700 dark:text-gray-300 font-mono text-sm">
           {taxCode || "-"}
         </span>
       ),
@@ -60,7 +62,9 @@ export const getCustomerColumns = (
       key: "address",
       ellipsis: true,
       render: (address: string) => (
-        <span className="text-gray-600">{address || "-"}</span>
+        <span className="text-gray-600 dark:text-gray-400">
+          {address || "-"}
+        </span>
       ),
     },
     {
