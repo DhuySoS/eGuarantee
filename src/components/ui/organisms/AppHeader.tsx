@@ -17,7 +17,6 @@ const AppHeader = () => {
     <div className="flex py-4 px-8 justify-between items-center bg-gray-100 border-b border-b-gray-200">
       <div className="text-lg font-bold">{tCommon("header.title")}</div>
       <div className="flex items-center gap-6">
-        <LocaleSwitcher />
         <BellOutlined style={{ fontSize: "20px" }} />
         <UserMiniProfile
           name={user?.username || tCommon("labels.user")}
@@ -27,6 +26,11 @@ const AppHeader = () => {
         <Dropdown
           menu={{
             items: [
+              {
+                label: <LocaleSwitcher />,
+                key: "locale",
+                disabled: false,
+              },
               {
                 label: isLoggingOut
                   ? tCommon("header.loggingOut")
