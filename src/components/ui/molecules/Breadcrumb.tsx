@@ -28,7 +28,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   return (
     <nav
       aria-label="Breadcrumb"
-      className={`border-b border-gray-200 px-6 py-4 ${className}`}
+      className={`border-b border-gray-200 dark:border-gray-800 px-6 py-4 ${className}`}
     >
       <ol className="flex items-center gap-4 text-sm">
         {items.map((item, index) => {
@@ -37,12 +37,16 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
             <li key={index} className="flex items-center gap-4">
               {item.href && !isLast ? (
                 <Link href={withLocale(item.href, locale)}>
-                  <span className="text-gray-500">{item.title}</span>
+                  <span className="text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                    {item.title}
+                  </span>
                 </Link>
               ) : (
                 <span
                   className={
-                    isLast ? "font-semibold text-gray-800" : "text-gray-500"
+                    isLast
+                      ? "font-semibold text-gray-800 dark:text-gray-200"
+                      : "text-gray-500 dark:text-gray-400"
                   }
                 >
                   {item.title}

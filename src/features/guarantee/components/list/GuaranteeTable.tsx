@@ -82,10 +82,10 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="text-base text-gray-800">
+      <div className="text-base text-gray-800 dark:text-gray-200">
         {t("table.total", { count: total })}
       </div>
-      <div className="bg-white rounded-xl overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-xs border border-gray-100 dark:border-gray-800">
         <UiTable<GuaranteeListItem>
           rowKey="id"
           columns={columns}

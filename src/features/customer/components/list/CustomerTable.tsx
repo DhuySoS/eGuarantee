@@ -75,15 +75,15 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="text-base text-gray-800">
+      <div className="text-base text-gray-800 dark:text-gray-200">
         {t.rich("table.total", {
           count: total,
           span: (chunks) => (
-            <span className="font-semibold text-gray-900">{chunks}</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">{chunks}</span>
           ),
         })}
       </div>
-      <div className="bg-white rounded-xl overflow-hidden shadow-xs border border-gray-100">
+      <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-xs border border-gray-100 dark:border-gray-800">
         <UiTable<Customer>
           rowKey="cif"
           columns={columns}

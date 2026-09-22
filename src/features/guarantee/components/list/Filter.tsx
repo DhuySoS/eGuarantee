@@ -88,8 +88,8 @@ const Filter: React.FC<FilterProps> = ({
   };
 
   return (
-    <div className="p-4 bg-gray-50 rounded-2xl space-y-6 border border-gray-200">
-      <p className="text-2xl font-bold">{t("title")}</p>
+    <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-2xl space-y-6 border border-gray-200 dark:border-gray-800 transition-colors duration-200">
+      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t("title")}</p>
       <div className="grid gap-6 grid-cols-3">
         <UiInputField label={t("keywordLabel")}>
           <UiInput

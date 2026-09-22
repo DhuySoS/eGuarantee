@@ -75,7 +75,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
     <Modal
       open={open}
       title={
-        <div className="text-xl font-bold text-gray-900 pb-2 border-b border-gray-100">
+        <div className="text-xl font-bold text-gray-900 dark:text-gray-100 pb-2 border-b border-gray-100 dark:border-gray-800">
           {isEdit ? t("editTitle") : t("createTitle")}
         </div>
       }
@@ -161,7 +161,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
         />
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <UiButton
             color="default"
             variant="outlined"
