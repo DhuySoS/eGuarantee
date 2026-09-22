@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@/features/guarantee/types/guarantee";
 import { getUserFromToken, isTokenValid } from "../utils/token";
+import { withLocale, getLocaleFromPath } from "@/shared/i18n/path";
 
 interface AuthContextType {
   user: User | null;
@@ -56,7 +57,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       localStorage.removeItem("refresh_token");
     }
     setUser(null);
-    router.replace("/auth");
+    const locale =
+      typeof window !== "undefined"
+        ? getLocaleFromPath(window.location.pathname)
+        : "vi";
+    router.replace(withLocale("/auth", locale));
   };
 
   return (
