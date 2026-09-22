@@ -10,13 +10,15 @@ import {
   type LoginFormData,
 } from "@/features/auth/schemas/LoginSchema";
 import { useLogin } from "../hooks/useLogin";
+import { useTranslations } from "next-intl";
 
 interface LoginFormProps {
   onSwitchToRegister?: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
-  const loginSchema = createLoginSchema();
+  const t = useTranslations("auth.login");
+  const loginSchema = createLoginSchema(t);
   const { mutate: login, isPending } = useLogin();
 
   const {
@@ -32,7 +34,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    console.log("Submit login data:", data);
     login(data);
   };
 
@@ -43,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
     >
       {/* Username Field */}
       <UiInputField
-        label="Tên đăng nhập"
+        label={t("usernameLabel")}
         required
         error={errors.username?.message}
       >
@@ -55,7 +56,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
               {...field}
               type="text"
               prefix={<UserOutlined />}
-              placeholder="Nhập tên đăng nhập"
+              placeholder={t("usernamePlaceholder")}
               hasError={Boolean(errors.username)}
               className="h-11"
             />
@@ -65,12 +66,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
 
       {/* Password Field */}
       <UiInputField
-        label="Mật khẩu"
+        label={t("passwordLabel")}
         required
         error={errors.password?.message}
         extraRight={
           <p className="text-xs text-blue-600 hover:underline cursor-pointer">
-            Quên mật khẩu?
+            {t("forgotPassword")}
           </p>
         }
       >
@@ -82,7 +83,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
               {...field}
               type="password"
               prefix={<LockFilled />}
-              placeholder="Nhập mật khẩu"
+              placeholder={t("passwordPlaceholder")}
               hasError={Boolean(errors.password)}
               className="h-11"
             />
@@ -97,17 +98,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
         loading={isPending}
         className="w-full h-11 text-base font-semibold mt-2"
       >
-        Đăng nhập
+        {isPending ? t("submitting") : t("submitButton")}
       </UiButton>
 
       {/* No Account Prompt */}
       <div className="flex justify-center gap-1 mt-2 text-xs">
-        <p className="font-medium text-gray-500">Chưa có tài khoản?</p>
+        <p className="font-medium text-gray-500">{t("noAccountPrompt")}</p>
         <p
           onClick={onSwitchToRegister}
           className="font-bold text-blue-600 hover:underline cursor-pointer"
         >
-          Tạo tài khoản
+          {t("createAccount")}
         </p>
       </div>
     </form>

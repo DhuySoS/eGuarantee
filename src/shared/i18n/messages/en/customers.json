@@ -1,0 +1,73 @@
+{
+  "list": {
+    "title": "Customer Management",
+    "subTitle": "Search, track and manage corporate customer information.",
+    "createButton": "Add New Customer"
+  },
+  "filter": {
+    "title": "Search Filters",
+    "keywordLabel": "Search Keyword",
+    "keywordPlaceholder": "Enter CIF, customer name, tax code...",
+    "resetButton": "Reset",
+    "searchButton": "Search"
+  },
+  "table": {
+    "total": "Total: {count} customers",
+    "columns": {
+      "cif": "CIF Code",
+      "customerName": "Customer Name",
+      "taxCode": "Tax Code",
+      "address": "Address",
+      "actions": "Actions"
+    },
+    "tooltips": {
+      "view": "View details",
+      "edit": "Edit",
+      "delete": "Delete customer"
+    },
+    "confirmDelete": {
+      "title": "Confirm Delete Customer",
+      "description": "Are you sure you want to delete customer \"{name}\" (CIF: {cif})?",
+      "ok": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "formModal": {
+    "createTitle": "Add New Customer",
+    "editTitle": "Edit Customer Information",
+    "fields": {
+      "cif": "CIF Code",
+      "customerName": "Customer Name",
+      "taxCode": "Tax Code",
+      "address": "Address"
+    },
+    "placeholders": {
+      "cif": "Enter 6-12 digits...",
+      "customerName": "Enter corporate name...",
+      "taxCode": "Enter tax code...",
+      "address": "Enter headquarters address..."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submitCreate": "Add New",
+      "submitEdit": "Update"
+    }
+  },
+  "detailModal": {
+    "title": "Customer Details",
+    "noAddress": "No address information",
+    "close": "Close",
+    "edit": "Edit"
+  },
+  "messages": {
+    "createSuccess": "Customer added successfully!",
+    "createFailed": "Failed to add customer!",
+    "updateSuccess": "Customer updated successfully!",
+    "updateFailed": "Failed to update customer!",
+    "deleteSuccess": "Customer deleted successfully!",
+    "deleteFailed": "Failed to delete customer!",
+    "loadErrorTitle": "Unable to load customer list",
+    "loadErrorDesc": "An error occurred from the server. Please check your connection.",
+    "retry": "Retry"
+  }
+}

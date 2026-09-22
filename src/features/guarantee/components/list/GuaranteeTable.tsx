@@ -12,6 +12,8 @@ import {
   type SortableGuaranteeField,
 } from "./guaranteeColumn";
 
+import { useLocale, useTranslations } from "next-intl";
+
 export interface GuaranteeTableProps {
   data?: GuaranteeListItem[];
   loading?: boolean;
@@ -42,9 +44,24 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
   onPageChange,
   onSortChange,
 }) => {
+  const t = useTranslations("guarantees.list");
+  const tType = useTranslations("guarantees.types");
+  const tStatus = useTranslations("guarantees.statuses");
+  const locale = useLocale();
+
   const columns = useMemo(
-    () => getGuaranteeColumns({ sortBy, sortDirection, role, onDelete }),
-    [sortBy, sortDirection, role, onDelete],
+    () =>
+      getGuaranteeColumns({
+        sortBy,
+        sortDirection,
+        role,
+        onDelete,
+        t,
+        tType,
+        tStatus,
+        locale,
+      }),
+    [sortBy, sortDirection, role, onDelete, t, tType, tStatus, locale],
   );
 
   const handleTableChange: TableProps<GuaranteeListItem>["onChange"] = (
@@ -66,8 +83,7 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
   return (
     <div className="space-y-4">
       <div className="text-base text-gray-800">
-        Tổng số: <span className="font-semibold text-gray-900">{total}</span>{" "}
-        yêu cầu
+        {t("table.total", { count: total })}
       </div>
       <div className="bg-white rounded-xl overflow-hidden shadow-xs">
         <UiTable<GuaranteeListItem>

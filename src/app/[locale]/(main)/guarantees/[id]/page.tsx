@@ -11,8 +11,12 @@ import {
 import type { Guarantee } from "@/features/guarantee/types/guarantee";
 import { useGuarantee } from "@/features/guarantee/hooks/useGuaranteeDetail";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import GuaranteeDetail from "@/features/guarantee/components/detail/GuaranteeDetail";
+
 const GuaranteeDetailPage = () => {
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
   const params = useParams();
   const id = params?.id as string;
   const guaranteeQuery = useGuarantee(id);
@@ -27,10 +31,12 @@ const GuaranteeDetailPage = () => {
   }
   const guarantee: Guarantee = guaranteeQuery.data;
 
-  const statusLabel = STATUS_LABELS[guarantee.status];
+  const statusLabel = t.has(`statuses.${guarantee.status}`)
+    ? t(`statuses.${guarantee.status}`)
+    : STATUS_LABELS[guarantee.status];
   return (
     <PageContainer
-      title="Chi tiết yêu cầu bảo lãnh"
+      title={t("detail.title")}
       subTitle={
         <div className="flex gap-2">
           <span className="text-gray-900 font-bold">{id}</span>{" "}
@@ -48,13 +54,13 @@ const GuaranteeDetailPage = () => {
         </div>
       }
       breadcrumbs={[
-        { title: "Trang chủ" },
+        { title: tCommon("breadcrumbs.home") },
         {
-          title: "Yêu cầu bảo lãnh",
+          title: tCommon("breadcrumbs.guarantees"),
           href: "/guarantees",
         },
         {
-          title: "Chi tiết",
+          title: tCommon("breadcrumbs.detail"),
         },
       ]}
     >

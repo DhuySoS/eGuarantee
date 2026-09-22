@@ -1,0 +1,73 @@
+{
+  "list": {
+    "title": "Quản lý khách hàng",
+    "subTitle": "Tìm kiếm, theo dõi và quản lý thông tin khách hàng doanh nghiệp.",
+    "createButton": "Thêm mới khách hàng"
+  },
+  "filter": {
+    "title": "Bộ lọc tìm kiếm",
+    "keywordLabel": "Từ khóa tìm kiếm",
+    "keywordPlaceholder": "Nhập mã CIF, tên khách hàng, mã số thuế...",
+    "resetButton": "Đặt lại",
+    "searchButton": "Tìm kiếm"
+  },
+  "table": {
+    "total": "Tổng số: {count} khách hàng",
+    "columns": {
+      "cif": "Mã CIF",
+      "customerName": "Tên khách hàng",
+      "taxCode": "Mã số thuế",
+      "address": "Địa chỉ",
+      "actions": "Thao tác"
+    },
+    "tooltips": {
+      "view": "Xem chi tiết",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa khách hàng"
+    },
+    "confirmDelete": {
+      "title": "Xác nhận xóa khách hàng",
+      "description": "Bạn có chắc chắn muốn xóa khách hàng \"{name}\" (CIF: {cif})?",
+      "ok": "Xóa",
+      "cancel": "Hủy"
+    }
+  },
+  "formModal": {
+    "createTitle": "Thêm mới khách hàng",
+    "editTitle": "Chỉnh sửa thông tin khách hàng",
+    "fields": {
+      "cif": "Mã CIF",
+      "customerName": "Tên khách hàng",
+      "taxCode": "Mã số thuế",
+      "address": "Địa chỉ"
+    },
+    "placeholders": {
+      "cif": "Nhập 6-12 chữ số...",
+      "customerName": "Nhập tên doanh nghiệp...",
+      "taxCode": "Nhập mã số thuế...",
+      "address": "Nhập địa chỉ trụ sở..."
+    },
+    "buttons": {
+      "cancel": "Hủy",
+      "submitCreate": "Thêm mới",
+      "submitEdit": "Cập nhật"
+    }
+  },
+  "detailModal": {
+    "title": "Chi tiết khách hàng",
+    "noAddress": "Chưa có thông tin địa chỉ",
+    "close": "Đóng",
+    "edit": "Chỉnh sửa"
+  },
+  "messages": {
+    "createSuccess": "Thêm mới khách hàng thành công!",
+    "createFailed": "Thêm mới khách hàng thất bại!",
+    "updateSuccess": "Cập nhật thông tin khách hàng thành công!",
+    "updateFailed": "Cập nhật thông tin khách hàng thất bại!",
+    "deleteSuccess": "Xóa khách hàng thành công!",
+    "deleteFailed": "Xóa khách hàng thất bại!",
+    "loadErrorTitle": "Không thể tải danh sách khách hàng",
+    "loadErrorDesc": "Đã có lỗi xảy ra từ máy chủ. Vui lòng kiểm tra lại kết nối.",
+    "retry": "Thử lại"
+  }
+}

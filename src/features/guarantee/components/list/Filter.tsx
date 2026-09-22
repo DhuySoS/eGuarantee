@@ -7,11 +7,10 @@ import UiSelect from "@/components/ui/atoms/UiSelect";
 import UiInputField from "@/components/ui/molecules/UiInputField";
 import React, { useState } from "react";
 import dayjs, { type Dayjs } from "dayjs";
-import {
-  GUARANTEE_STATUS_OPTIONS,
-  GUARANTEE_TYPE_OPTIONS,
-} from "../../constants/guarantee";
 import type { GuaranteeStatus, GuaranteeType } from "../../types/guarantee";
+import { useGuaranteeOptions } from "../../hooks/useGuaranteeOptions";
+
+import { useTranslations } from "next-intl";
 
 export interface FilterValues {
   keyword?: string;
@@ -32,6 +31,8 @@ const Filter: React.FC<FilterProps> = ({
   onReset,
   loading = false,
 }) => {
+  const t = useTranslations("guarantees.list.filter");
+  const { guaranteeStatusOptions, guaranteeTypeOptions } = useGuaranteeOptions();
   const [keyword, setKeyword] = useState<string>("");
   const [status, setStatus] = useState<GuaranteeStatus | undefined>(undefined);
   const [guaranteeType, setGuaranteeType] = useState<GuaranteeType | undefined>(
@@ -88,11 +89,11 @@ const Filter: React.FC<FilterProps> = ({
 
   return (
     <div className="p-4 bg-gray-50 rounded-2xl space-y-6 border border-gray-200">
-      <p className="text-2xl font-bold">Bộ lọc</p>
+      <p className="text-2xl font-bold">{t("title")}</p>
       <div className="grid gap-6 grid-cols-3">
-        <UiInputField label="Từ khóa">
+        <UiInputField label={t("keywordLabel")}>
           <UiInput
-            placeholder="Nhập mã yêu cầu, tên khách hàng, CIF"
+            placeholder={t("keywordPlaceholder")}
             className="h-10"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -100,20 +101,20 @@ const Filter: React.FC<FilterProps> = ({
           />
         </UiInputField>
         <div className="flex gap-6">
-          <UiInputField label="Trạng thái">
+          <UiInputField label={t("statusLabel")}>
             <UiSelect
-              placeholder="Tất cả"
+              placeholder={t("statusPlaceholder")}
               allowClear
-              options={GUARANTEE_STATUS_OPTIONS}
+              options={guaranteeStatusOptions}
               value={status}
               onChange={(val) => setStatus(val as GuaranteeStatus | undefined)}
             />
           </UiInputField>
-          <UiInputField label="Loại bảo lãnh">
+          <UiInputField label={t("typeLabel")}>
             <UiSelect
-              placeholder="Tất cả"
+              placeholder={t("typePlaceholder")}
               allowClear
-              options={GUARANTEE_TYPE_OPTIONS}
+              options={guaranteeTypeOptions}
               value={guaranteeType}
               onChange={(val) =>
                 setGuaranteeType(val as GuaranteeType | undefined)
@@ -122,10 +123,10 @@ const Filter: React.FC<FilterProps> = ({
           </UiInputField>
         </div>
         <div className="flex gap-6">
-          <UiInputField label="Ngày tạo">
+          <UiInputField label={t("createdDateLabel")}>
             <div className="flex items-center gap-2">
               <UiDatePicker
-                placeholder="Từ ngày"
+                placeholder={t("fromDatePlaceholder")}
                 className="h-10"
                 format="DD/MM/YYYY"
                 value={fromDate}
@@ -134,7 +135,7 @@ const Filter: React.FC<FilterProps> = ({
               />
               <span className="text-gray-400 font-medium">-</span>
               <UiDatePicker
-                placeholder="Đến ngày"
+                placeholder={t("toDatePlaceholder")}
                 className="h-10"
                 format="DD/MM/YYYY"
                 value={toDate}
@@ -154,7 +155,7 @@ const Filter: React.FC<FilterProps> = ({
           onClick={handleReset}
           disabled={loading}
         >
-          Đặt lại
+          {t("resetButton")}
         </UiButton>
         <UiButton
           color="primary"
@@ -163,7 +164,7 @@ const Filter: React.FC<FilterProps> = ({
           onClick={handleSearch}
           loading={loading}
         >
-          Tìm kiếm
+          {t("searchButton")}
         </UiButton>
       </div>
     </div>

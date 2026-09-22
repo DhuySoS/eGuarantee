@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
+import { useTranslations } from "next-intl";
 import customerService from "../services/customer.service";
 import type {
   CustomerCreationRequest,
@@ -12,6 +13,7 @@ import { CUSTOMERS_QUERY_KEY } from "./useCustomerList";
 export const useCustomerMutations = () => {
   const queryClient = useQueryClient();
   const { message } = App.useApp();
+  const t = useTranslations("customers.messages");
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: [CUSTOMERS_QUERY_KEY] });
@@ -21,11 +23,11 @@ export const useCustomerMutations = () => {
     mutationFn: (payload: CustomerCreationRequest) =>
       customerService.createCustomer(payload),
     onSuccess: () => {
-      message.success("Thêm mới khách hàng thành công!");
+      message.success(t("createSuccess"));
       invalidate();
     },
     onError: (err: any) => {
-      message.error(err?.message || "Thêm mới khách hàng thất bại!");
+      message.error(err?.message || t("createFailed"));
     },
   });
 
@@ -38,22 +40,22 @@ export const useCustomerMutations = () => {
       payload: CustomerUpdateRequest;
     }) => customerService.updateCustomer(cif, payload),
     onSuccess: () => {
-      message.success("Cập nhật thông tin khách hàng thành công!");
+      message.success(t("updateSuccess"));
       invalidate();
     },
     onError: (err: any) => {
-      message.error(err?.message || "Cập nhật thông tin khách hàng thất bại!");
+      message.error(err?.message || t("updateFailed"));
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (cif: string) => customerService.deleteCustomer(cif),
     onSuccess: () => {
-      message.success("Xóa khách hàng thành công!");
+      message.success(t("deleteSuccess"));
       invalidate();
     },
     onError: (err: any) => {
-      message.error(err?.message || "Xóa khách hàng thất bại!");
+      message.error(err?.message || t("deleteFailed"));
     },
   });
 

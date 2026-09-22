@@ -16,6 +16,8 @@ import type {
 import type { CustomerFormData } from "../../schemas/customer.schema";
 import type { SortableCustomerField } from "./customerColumns";
 
+import { useTranslations } from "next-intl";
+
 const DEFAULT_PAGE = 0;
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -24,6 +26,7 @@ export interface CustomerListViewProps {
 }
 
 export const CustomerListView: React.FC<CustomerListViewProps> = () => {
+  const tMessages = useTranslations("customers.messages");
   const [queryParams, setQueryParams] = useState<CustomerQueryParams>({
     page: DEFAULT_PAGE,
     size: DEFAULT_PAGE_SIZE,
@@ -132,12 +135,11 @@ export const CustomerListView: React.FC<CustomerListViewProps> = () => {
         <Alert
           type="error"
           showIcon
-          title="Không thể tải danh sách khách hàng"
+          title={tMessages("loadErrorTitle")}
           description={
             <div className="flex items-center justify-between mt-1">
               <span>
-                {error?.message ||
-                  "Đã có lỗi xảy ra từ máy chủ. Vui lòng kiểm tra lại kết nối."}
+                {error?.message || tMessages("loadErrorDesc")}
               </span>
               <UiButton
                 size="small"
@@ -145,7 +147,7 @@ export const CustomerListView: React.FC<CustomerListViewProps> = () => {
                 variant="outlined"
                 onClick={() => refetch()}
               >
-                Thử lại
+                {tMessages("retry")}
               </UiButton>
             </div>
           }

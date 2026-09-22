@@ -6,6 +6,7 @@ import type { Guarantee, ProcessingHistory } from "../../types/guarantee";
 
 import MakerActions from "./MakerActions";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 
 interface GuaranteeDetailProps {
   guarantee: Guarantee;
@@ -71,9 +72,14 @@ export default function MakerDetail({
   onDelete,
   isDeleting = false,
 }: GuaranteeDetailProps) {
-  const guaranteeTypeLabel = GUARANTEE_TYPE_LABELS[guarantee.guaranteeType];
-
-  const statusLabel = STATUS_LABELS[guarantee.status];
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
+  const guaranteeTypeLabel = t.has(`types.${guarantee.guaranteeType}`)
+    ? t(`types.${guarantee.guaranteeType}`)
+    : GUARANTEE_TYPE_LABELS[guarantee.guaranteeType] ?? guarantee.guaranteeType;
+  const statusLabel = t.has(`statuses.${guarantee.status}`)
+    ? t(`statuses.${guarantee.status}`)
+    : STATUS_LABELS[guarantee.status] ?? guarantee.status;
 
   return (
     <div className="min-h-screen ">
@@ -87,25 +93,25 @@ export default function MakerDetail({
             {/* Thông tin khách hàng */}
 
             <Card
-              title="Thông tin khách hàng"
+              title={t("form.sections.customerInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Tên khách hàng">
+                <Descriptions.Item label={t("detail.labels.customerName")}>
                   {guarantee.customerName || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="CIF">
+                <Descriptions.Item label={t("detail.labels.cif")}>
                   {guarantee.customerCif || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Mã số thuế">
+                <Descriptions.Item label={t("detail.labels.taxCode")}>
                   {guarantee.taxCode || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Địa chỉ">
+                <Descriptions.Item label={t("detail.labels.beneficiaryAddress")}>
                   {guarantee.customerAddress || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -114,44 +120,44 @@ export default function MakerDetail({
             {/* Thông tin bảo lãnh */}
 
             <Card
-              title="Thông tin bảo lãnh"
+              title={t("form.sections.guaranteeInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Loại bảo lãnh">
+                <Descriptions.Item label={t("detail.labels.guaranteeType")}>
                   {guaranteeTypeLabel}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số tiền">
+                <Descriptions.Item label={t("detail.labels.amount")}>
                   <span className="font-semibold">
                     {guarantee.guaranteeAmount.toLocaleString("vi-VN")}{" "}
                     {guarantee.currency}
                   </span>
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Ngày hiệu lực">
+                <Descriptions.Item label={t("form.fields.effectiveDate")}>
                   {guarantee.effectiveDate || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Ngày hết hạn">
+                <Descriptions.Item label={t("form.fields.expiryDate")}>
                   {guarantee.expiryDate || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số ngày bảo lãnh">
-                  {guarantee.guaranteeDays} ngày
+                <Descriptions.Item label={t("detail.labels.validityPeriod")}>
+                  {t("detail.labels.days", { days: guarantee.guaranteeDays })}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số gói thầu">
+                <Descriptions.Item label={t("detail.labels.tenderNumber")}>
                   {guarantee.tenderNumber || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số hợp đồng liên quan">
+                <Descriptions.Item label={t("detail.labels.relatedContractNumber")}>
                   {guarantee.relatedContractNumber || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số tham chiếu">
+                <Descriptions.Item label={t("detail.labels.referenceNumber")}>
                   {guarantee.referenceNumber || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -160,17 +166,17 @@ export default function MakerDetail({
             {/* Thông tin bên thụ hưởng */}
 
             <Card
-              title="Thông tin bên thụ hưởng"
+              title={t("detail.sections.beneficiaryInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Tên bên thụ hưởng">
+                <Descriptions.Item label={t("detail.labels.beneficiaryName")}>
                   {guarantee.beneficiaryName || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Địa chỉ">
+                <Descriptions.Item label={t("detail.labels.beneficiaryAddress")}>
                   {guarantee.beneficiaryAddress || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -179,17 +185,17 @@ export default function MakerDetail({
             {/* Thông tin liên hệ */}
 
             <Card
-              title="Thông tin liên hệ"
+              title={t("detail.sections.beneficiaryInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Email">
+                <Descriptions.Item label={t("detail.labels.contactEmail")}>
                   {guarantee.contactEmail || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số điện thoại">
+                <Descriptions.Item label={t("detail.labels.phoneNumber")}>
                   {guarantee.phoneNumber || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -198,7 +204,7 @@ export default function MakerDetail({
             {/* Mục đích bảo lãnh */}
 
             <Card
-              title="Mục đích bảo lãnh"
+              title={t("detail.labels.purpose")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
@@ -217,14 +223,14 @@ export default function MakerDetail({
             {/* Lịch sử xử lý */}
 
             <Card
-              title="Lịch sử xử lý"
+              title={t("detail.sections.history")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               {histories.length === 0 ? (
                 <div className="py-4 text-sm text-gray-500">
-                  Chưa có lịch sử xử lý.
+                  {t("detail.labels.noHistory")}
                 </div>
               ) : (
                 <Timeline
@@ -268,35 +274,35 @@ export default function MakerDetail({
             {/* Thông tin bổ sung */}
 
             <Card
-              title="Thông tin bổ sung"
+              title={t("detail.sections.generalInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Mã yêu cầu">
+                <Descriptions.Item label={t("detail.labels.requestId")}>
                   {guarantee.id}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Trạng thái">
+                <Descriptions.Item label={tCommon("labels.status")}>
                   <Tag>{statusLabel}</Tag>
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Ngày tạo">
+                <Descriptions.Item label={tCommon("labels.createdAt")}>
                   {dayjs(guarantee.createdDate).format("DD/MM/YYYY HH:mm:ss") ||
                     "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Người tạo">
+                <Descriptions.Item label={tCommon("labels.user")}>
                   {guarantee.createdByFullName || guarantee.createdBy || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Cập nhật lần cuối">
+                <Descriptions.Item label={tCommon("labels.updatedAt")}>
                   {dayjs(guarantee.updatedDate).format("DD/MM/YYYY HH:mm:ss") ||
                     "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Người cập nhật">
+                <Descriptions.Item label={tCommon("labels.user")}>
                   {guarantee.updatedByFullName || guarantee.updatedBy || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -306,7 +312,7 @@ export default function MakerDetail({
 
             {guarantee.status === "REJECTED" && (
               <Card
-                title="Lý do từ chối"
+                title={t("detail.labels.reason")}
                 variant="outlined"
                 style={CARD_STYLE}
                 styles={CARD_STYLES}
@@ -321,7 +327,7 @@ export default function MakerDetail({
 
                   return (
                     <div className="text-sm leading-6 text-gray-700">
-                      {rejectHistory?.comment || "Không có lý do từ chối."}
+                      {rejectHistory?.comment || "-"}
                     </div>
                   );
                 })()}

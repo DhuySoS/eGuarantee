@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import UiInput from "@/components/ui/atoms/UiInput";
 import UiButton from "@/components/ui/atoms/UiButton";
 import UiInputField from "@/components/ui/molecules/UiInputField";
+import { useTranslations } from "next-intl";
 import {
   customerFormSchema,
   type CustomerFormData,
@@ -28,6 +29,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
   initialData,
   loading = false,
 }) => {
+  const t = useTranslations("customers.formModal");
   const isEdit = !!initialData;
 
   const {
@@ -74,7 +76,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
       open={open}
       title={
         <div className="text-xl font-bold text-gray-900 pb-2 border-b border-gray-100">
-          {isEdit ? "Chỉnh sửa thông tin khách hàng" : "Thêm mới khách hàng"}
+          {isEdit ? t("editTitle") : t("createTitle")}
         </div>
       }
       onCancel={onClose}
@@ -89,10 +91,10 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
           name="cif"
           control={control}
           render={({ field }) => (
-            <UiInputField label="Mã CIF" required error={errors.cif?.message}>
+            <UiInputField label={t("fields.cif")} required error={errors.cif?.message}>
               <UiInput
                 {...field}
-                placeholder="Nhập mã CIF (6 - 12 chữ số)"
+                placeholder={t("placeholders.cif")}
                 disabled={isEdit}
                 maxLength={12}
                 className="h-10 font-mono"
@@ -107,13 +109,13 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
           control={control}
           render={({ field }) => (
             <UiInputField
-              label="Tên khách hàng / Doanh nghiệp"
+              label={t("fields.customerName")}
               required
               error={errors.customerName?.message}
             >
               <UiInput
                 {...field}
-                placeholder="Nhập tên doanh nghiệp hoặc cá nhân"
+                placeholder={t("placeholders.customerName")}
                 maxLength={255}
                 className="h-10"
               />
@@ -127,13 +129,13 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
           control={control}
           render={({ field }) => (
             <UiInputField
-              label="Mã số thuế"
+              label={t("fields.taxCode")}
               required
               error={errors.taxCode?.message}
             >
               <UiInput
                 {...field}
-                placeholder="Nhập mã số thuế"
+                placeholder={t("placeholders.taxCode")}
                 maxLength={50}
                 className="h-10 font-mono"
               />
@@ -146,10 +148,10 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
           name="address"
           control={control}
           render={({ field }) => (
-            <UiInputField label="Địa chỉ" error={errors.address?.message}>
+            <UiInputField label={t("fields.address")} error={errors.address?.message}>
               <UiInput.TextArea
                 {...field}
-                placeholder="Nhập địa chỉ trụ sở hoặc liên hệ"
+                placeholder={t("placeholders.address")}
                 rows={3}
                 maxLength={300}
                 showCount
@@ -166,10 +168,10 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
             onClick={onClose}
             disabled={loading}
           >
-            Hủy
+            {t("buttons.cancel")}
           </UiButton>
           <UiButton type="primary" htmlType="submit" loading={loading}>
-            {isEdit ? "Lưu thay đổi" : "Thêm mới"}
+            {isEdit ? t("buttons.submitEdit") : t("buttons.submitCreate")}
           </UiButton>
         </div>
       </form>

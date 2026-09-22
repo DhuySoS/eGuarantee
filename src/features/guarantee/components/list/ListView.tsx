@@ -9,6 +9,7 @@ import Filter, { type FilterValues } from "./Filter";
 import { useGuaranteeList } from "../../hooks/useGuaranteeList";
 import guaranteeService from "../../services/guarantee.service";
 import { useRole } from "@/features/auth/hooks/useRole";
+import { useTranslations } from "next-intl";
 import type {
   GuaranteeQueryParams,
   GuaranteeListItem,
@@ -18,6 +19,8 @@ const DEFAULT_PAGE = 0;
 const DEFAULT_PAGE_SIZE = 5;
 
 const ListView = () => {
+  const t = useTranslations("guarantees.list");
+  const tCommon = useTranslations("common");
   const { message } = App.useApp();
   const { role } = useRole();
 
@@ -34,11 +37,11 @@ const ListView = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => guaranteeService.deleteGuarantee(id),
     onSuccess: () => {
-      message.success("Xóa yêu cầu bảo lãnh thành công!");
+      message.success(t("messages.deleteSuccess"));
       refetch();
     },
     onError: (err: any) => {
-      message.error(err?.message || "Xóa yêu cầu bảo lãnh thất bại!");
+      message.error(err?.message || t("messages.deleteFailed"));
     },
   });
 
@@ -95,20 +98,17 @@ const ListView = () => {
         <Alert
           type="error"
           showIcon
-          title="Không thể tải danh sách yêu cầu bảo lãnh"
+          title={t("messages.loadErrorTitle")}
           description={
             <div className="flex items-center justify-between mt-1">
-              <span>
-                {error?.message ||
-                  "Đã có lỗi xảy ra từ hệ thống hoặc máy chủ. Vui lòng kiểm tra lại kết nối."}
-              </span>
+              <span>{error?.message || t("messages.loadErrorDesc")}</span>
               <UiButton
                 size="small"
                 danger
                 variant="outlined"
                 onClick={() => refetch()}
               >
-                Thử lại
+                {tCommon("buttons.retry")}
               </UiButton>
             </div>
           }

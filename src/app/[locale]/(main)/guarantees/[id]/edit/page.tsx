@@ -4,14 +4,18 @@ import GuaranteeForm from "@/features/guarantee/components/form/GuaranteeForm";
 import { useGuarantee } from "@/features/guarantee/hooks/useGuaranteeDetail";
 import { useGuaranteeMutations } from "@/features/guarantee/hooks/useGuaranteeMutations";
 import { GuaranteeFormData } from "@/features/guarantee/schemas/guarantee.schema";
-import { useParams, useRouter } from "next/navigation";
+import { useAppNavigation } from "@/shared/lib/navigation/useAppNavigation";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 const GuaranteeEditPage = () => {
-  const router = useRouter();
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
+  const { push } = useAppNavigation();
   const urlParams = useParams();
   const id = urlParams?.id as string;
-  const { data: guarantee, isLoading } = useGuarantee(id);
+  const { data: guarantee } = useGuarantee(id);
   const { updateMutation, submitMutation } = useGuaranteeMutations();
 
   const handleSaveDraft = (data: GuaranteeFormData) => {
@@ -19,7 +23,7 @@ const GuaranteeEditPage = () => {
       { id, payload: data },
       {
         onSuccess: () => {
-          router.push("/guarantees");
+          push("/guarantees");
         },
       },
     );
@@ -32,25 +36,26 @@ const GuaranteeEditPage = () => {
         onSuccess: () => {
           submitMutation.mutate(id, {
             onSuccess: () => {
-              router.push("/guarantees");
+              push("/guarantees");
             },
           });
         },
       },
     );
   };
+
   return (
     <PageContainer
-      title="Chỉnh sửa yêu cầu bảo lãnh"
-      subTitle="Cập nhật và chỉnh sửa thông tin yêu cầu bảo lãnh."
+      title={t("edit.title")}
+      subTitle={t("edit.subTitle")}
       breadcrumbs={[
-        { title: "Trang chủ" },
+        { title: tCommon("breadcrumbs.home") },
         {
-          title: "Yêu cầu bảo lãnh",
+          title: tCommon("breadcrumbs.guarantees"),
           href: "/guarantees",
         },
         {
-          title: "Chỉnh sửa",
+          title: tCommon("breadcrumbs.edit"),
         },
       ]}
     >

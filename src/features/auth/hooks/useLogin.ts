@@ -6,21 +6,25 @@ import authService from "../services/auth.service";
 import type { LoginPayload, AuthTokens } from "../types/auth";
 import type { ApiErrorResponse } from "@/features/guarantee/types/guarantee";
 import { useAuth } from "../context/AuthContext";
+import { useAppNavigation } from "@/shared/lib/navigation/useAppNavigation";
+import { useTranslations } from "next-intl";
 
 export const useLogin = () => {
-  const router = useRouter();
   const { login: setAuthLogin } = useAuth();
   const { message } = App.useApp();
-
+  const { push } = useAppNavigation();
+  const t = useTranslations("auth.login");
   return useMutation<AuthTokens, ApiErrorResponse, LoginPayload>({
     mutationFn: (payload: LoginPayload) => authService.login(payload),
     onSuccess: (data) => {
       setAuthLogin(data.accessToken, data.refreshToken);
-      message.success("Đăng nhập thành công!");
-      router.push("/guarantees");
+      message.success(t("loginSuccess"));
+      setTimeout(() => {
+        push("/guarantees");
+      }, 500);
     },
     onError: (error) => {
-      message.error(error.message || "Đăng nhập thất bại. Vui lòng thử lại!");
+      message.error(error.message || t("loginFailed"));
     },
   });
 };

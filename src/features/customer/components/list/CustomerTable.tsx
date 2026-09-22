@@ -9,6 +9,7 @@ import {
   getCustomerColumns,
   type SortableCustomerField,
 } from "./customerColumns";
+import { useTranslations } from "next-intl";
 
 export interface CustomerTableProps {
   data?: Customer[];
@@ -42,6 +43,8 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
   onPageChange,
   onSortChange,
 }) => {
+  const t = useTranslations("customers");
+
   const columns = useMemo(
     () =>
       getCustomerColumns({
@@ -50,8 +53,9 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
         onView,
         onEdit,
         onDelete,
+        t,
       }),
-    [sortBy, sortDirection, onView, onEdit, onDelete],
+    [sortBy, sortDirection, onView, onEdit, onDelete, t],
   );
 
   const handleTableChange: TableProps<Customer>["onChange"] = (
@@ -72,8 +76,12 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
   return (
     <div className="space-y-4">
       <div className="text-base text-gray-800">
-        Tổng số: <span className="font-semibold text-gray-900">{total}</span>{" "}
-        khách hàng
+        {t.rich("table.total", {
+          count: total,
+          span: (chunks) => (
+            <span className="font-semibold text-gray-900">{chunks}</span>
+          ),
+        })}
       </div>
       <div className="bg-white rounded-xl overflow-hidden shadow-xs border border-gray-100">
         <UiTable<Customer>

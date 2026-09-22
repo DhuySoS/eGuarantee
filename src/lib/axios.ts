@@ -94,11 +94,15 @@ apiClient.interceptors.response.use(
       };
     }
 
-    // Xử lý 401: Xóa token khi hết hạn phiên đăng nhập
-    if (status === 401 && typeof window !== "undefined") {
+    // Xử lý 401: Xóa token khi hết hạn phiên đăng nhập (bỏ qua nếu là request auth hoặc đang ở trang auth)
+    const isAuthUrl =
+      error.config?.url?.includes("/auth/login") ||
+      error.config?.url?.includes("/auth/register");
+
+    if (status === 401 && !isAuthUrl && typeof window !== "undefined") {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      if (window.location.pathname !== "/auth") {
+      if (!window.location.pathname.includes("/auth")) {
         window.location.href = "/auth";
       }
     }

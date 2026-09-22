@@ -4,6 +4,7 @@ import React from "react";
 import { Modal } from "antd";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import UiButton from "@/components/ui/atoms/UiButton";
+import { useTranslations } from "next-intl";
 import type { Customer } from "../../types/customer";
 
 export interface CustomerDetailModalProps {
@@ -19,6 +20,8 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
   onClose,
   onEdit,
 }) => {
+  const t = useTranslations("customers");
+
   if (!customer) return null;
 
   return (
@@ -31,7 +34,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
           </div>
           <div>
             <h3 className="text-lg font-bold text-gray-900 leading-none">
-              Chi tiết khách hàng
+              {t("detailModal.title")}
             </h3>
             <p className="text-xs text-gray-500 mt-1 font-mono">
               CIF: {customer.cif}
@@ -43,7 +46,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
       footer={
         <div className="flex justify-end gap-3 pt-2">
           <UiButton color="default" variant="outlined" onClick={onClose}>
-            Đóng
+            {t("detailModal.close")}
           </UiButton>
           <UiButton
             type="primary"
@@ -53,7 +56,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
               onEdit?.(customer);
             }}
           >
-            Chỉnh sửa
+            {t("detailModal.edit")}
           </UiButton>
         </div>
       }
@@ -64,7 +67,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
         <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 grid grid-cols-2 gap-4">
           <div>
             <span className="text-xs text-gray-500 font-medium block">
-              Mã CIF
+              {t("formModal.fields.cif")}
             </span>
             <span className="text-base font-semibold text-blue-600 font-mono">
               {customer.cif}
@@ -73,7 +76,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
 
           <div>
             <span className="text-xs text-gray-500 font-medium block">
-              Mã số thuế
+              {t("formModal.fields.taxCode")}
             </span>
             <span className="text-base font-semibold text-gray-800 font-mono">
               {customer.taxCode || "-"}
@@ -84,7 +87,7 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
         <div className="space-y-3 px-1">
           <div>
             <span className="text-xs text-gray-500 font-medium block">
-              Tên khách hàng
+              {t("formModal.fields.customerName")}
             </span>
             <span className="text-base font-medium text-gray-900">
               {customer.customerName}
@@ -93,10 +96,10 @@ const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
 
           <div>
             <span className="text-xs text-gray-500 font-medium block">
-              Địa chỉ
+              {t("formModal.fields.address")}
             </span>
             <span className="text-sm text-gray-700">
-              {customer.address || "Chưa có thông tin địa chỉ"}
+              {customer.address || t("detailModal.noAddress")}
             </span>
           </div>
         </div>

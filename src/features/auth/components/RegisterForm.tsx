@@ -10,13 +10,15 @@ import {
   type RegisterFormData,
 } from "@/features/auth/schemas/RegisterSchema";
 import { useRegister } from "../hooks/useRegister";
+import { useTranslations } from "next-intl";
 
 interface RegisterFormProps {
   onSwitchToLogin?: () => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
-  const registerSchema = createRegisterSchema();
+  const t = useTranslations("auth.register");
+  const registerSchema = createRegisterSchema(t);
   const { mutate: register, isPending } = useRegister({
     onSuccess: () => {
       onSwitchToLogin?.();
@@ -47,7 +49,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
     >
       {/* Username Field */}
       <UiInputField
-        label="Tên đăng nhập"
+        label={t("usernameLabel")}
         required
         error={errors.username?.message}
       >
@@ -59,7 +61,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
               {...field}
               type="text"
               prefix={<UserOutlined />}
-              placeholder="Nhập tên đăng nhập (vd: maker01)"
+              placeholder={t("usernamePlaceholder")}
               hasError={Boolean(errors.username)}
               className="h-11"
             />
@@ -68,7 +70,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       </UiInputField>
 
       {/* Full Name Field */}
-      <UiInputField label="Họ và tên" required error={errors.fullName?.message}>
+      <UiInputField label={t("fullNameLabel")} required error={errors.fullName?.message}>
         <Controller
           name="fullName"
           control={control}
@@ -77,7 +79,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
               {...field}
               type="text"
               prefix={<IdcardOutlined />}
-              placeholder="Nhập họ và tên (vd: Nguyen Van Maker)"
+              placeholder={t("fullNamePlaceholder")}
               hasError={Boolean(errors.fullName)}
               className="h-11"
             />
@@ -86,7 +88,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       </UiInputField>
 
       {/* Password Field */}
-      <UiInputField label="Mật khẩu" required error={errors.password?.message}>
+      <UiInputField label={t("passwordLabel")} required error={errors.password?.message}>
         <Controller
           name="password"
           control={control}
@@ -95,7 +97,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
               {...field}
               type="password"
               prefix={<LockFilled />}
-              placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+              placeholder={t("passwordPlaceholder")}
               hasError={Boolean(errors.password)}
               className="h-11"
             />
@@ -110,17 +112,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
         loading={isPending}
         className="w-full h-11 text-base font-semibold mt-2"
       >
-        Đăng ký
+        {isPending ? t("submitting") : t("submitButton")}
       </UiButton>
 
       {/* Already have account prompt */}
       <div className="flex justify-center gap-1 mt-2 text-xs">
-        <p className="font-medium text-gray-500">Đã có tài khoản?</p>
+        <p className="font-medium text-gray-500">{t("hasAccountPrompt")}</p>
         <p
           onClick={onSwitchToLogin}
           className="font-bold text-blue-600 hover:underline cursor-pointer"
         >
-          Đăng nhập ngay
+          {t("loginNow")}
         </p>
       </div>
     </form>

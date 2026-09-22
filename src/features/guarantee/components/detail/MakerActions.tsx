@@ -2,104 +2,100 @@
 
 import { Button, Popconfirm, Space } from "antd";
 import {
-    DeleteOutlined,
-    EditOutlined,
-    SendOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-
+import { useLocale, useTranslations } from "next-intl";
+import { withLocale } from "@/shared/i18n/path";
 import type { Guarantee } from "../../types/guarantee";
 
 interface MakerActionsProps {
-    guarantee: Guarantee;
-
-    onDelete?: () => void;
-    onSubmit?: () => void;
-
-    isDeleting?: boolean;
-    isSubmitting?: boolean;
+  guarantee: Guarantee;
+  onDelete?: () => void;
+  onSubmit?: () => void;
+  isDeleting?: boolean;
+  isSubmitting?: boolean;
 }
 
 export default function MakerActions({
-                                         guarantee,
-                                         onDelete,
-                                         onSubmit,
-                                         isDeleting = false,
-                                         isSubmitting = false,
-                                     }: MakerActionsProps) {
-    const canEdit =
-        guarantee.status === "DRAFT" ||
-        guarantee.status === "REJECTED";
+  guarantee,
+  onDelete,
+  onSubmit,
+  isDeleting = false,
+  isSubmitting = false,
+}: MakerActionsProps) {
+  const locale = useLocale();
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
 
-    const canDelete =
-        guarantee.status === "DRAFT";
+  const canEdit =
+    guarantee.status === "DRAFT" ||
+    guarantee.status === "REJECTED";
 
-    const canSubmit =
-        guarantee.status === "DRAFT";
+  const canDelete =
+    guarantee.status === "DRAFT";
 
-    return (
-        <Space wrap>
-            {/* ================= EDIT ================= */}
+  const canSubmit =
+    guarantee.status === "DRAFT";
 
-            {canEdit && (
-                <Link
-                    href={`/guarantees/${guarantee.id}/edit`}
-                >
-                    <Button
-                        icon={<EditOutlined />}
-                    >
-                        Chỉnh sửa
-                    </Button>
-                </Link>
-            )}
+  return (
+    <Space wrap>
+      {/* ================= EDIT ================= */}
+      {canEdit && (
+        <Link href={withLocale(`/guarantees/${guarantee.id}/edit`, locale)}>
+          <Button icon={<EditOutlined />}>
+            {t("detail.actions.edit")}
+          </Button>
+        </Link>
+      )}
 
-            {/* ================= DELETE ================= */}
+      {/* ================= DELETE ================= */}
+      {canDelete && (
+        <Popconfirm
+          title={t("detail.actions.confirmDeleteTitle")}
+          description={t("detail.actions.confirmDeleteDesc")}
+          okText={t("detail.actions.delete")}
+          cancelText={tCommon("buttons.cancel")}
+          okButtonProps={{
+            danger: true,
+            loading: isDeleting,
+          }}
+          onConfirm={onDelete}
+        >
+          <Button
+            danger
+            icon={<DeleteOutlined />}
+            loading={isDeleting}
+          >
+            {t("detail.actions.delete")}
+          </Button>
+        </Popconfirm>
+      )}
 
-            {canDelete && (
-                <Popconfirm
-                    title="Xóa yêu cầu bảo lãnh?"
-                    description="Bạn có chắc chắn muốn xóa yêu cầu này?"
-                    okText="Xóa"
-                    cancelText="Hủy"
-                    okButtonProps={{
-                        danger: true,
-                        loading: isDeleting,
-                    }}
-                    onConfirm={onDelete}
-                >
-                    <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        loading={isDeleting}
-                    >
-                        Xóa
-                    </Button>
-                </Popconfirm>
-            )}
-
-            {/* ================= SUBMIT ================= */}
-
-            {canSubmit && (
-                <Popconfirm
-                    title="Gửi yêu cầu duyệt?"
-                    description="Bạn có chắc chắn muốn gửi yêu cầu này để Checker duyệt?"
-                    okText="Gửi duyệt"
-                    cancelText="Hủy"
-                    okButtonProps={{
-                        type: "primary",
-                        loading: isSubmitting,
-                    }}
-                    onConfirm={onSubmit}
-                >
-                    <Button
-                        type="primary"
-                        icon={<SendOutlined />}
-                        loading={isSubmitting}
-                    >
-                        Gửi duyệt
-                    </Button>
-                </Popconfirm>
-            )}
-        </Space>
-    );
+      {/* ================= SUBMIT ================= */}
+      {canSubmit && (
+        <Popconfirm
+          title={t("detail.actions.confirmSubmitTitle")}
+          description={t("detail.actions.confirmSubmitDesc")}
+          okText={t("detail.actions.submitApproval")}
+          cancelText={tCommon("buttons.cancel")}
+          okButtonProps={{
+            type: "primary",
+            loading: isSubmitting,
+          }}
+          onConfirm={onSubmit}
+        >
+          <Button
+            type="primary"
+            icon={<SendOutlined />}
+            loading={isSubmitting}
+          >
+            {t("detail.actions.submitApproval")}
+          </Button>
+        </Popconfirm>
+      )}
+    </Space>
+  );
 }

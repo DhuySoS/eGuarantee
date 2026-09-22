@@ -9,7 +9,7 @@ export interface UiPaginationProps extends PaginationProps {
 
 export const UiPagination: React.FC<UiPaginationProps> = ({
   className = "",
-  locale = { items_per_page: "/ trang" },
+  locale,
   showSizeChanger = true,
   pageSizeOptions = ["5", "10", "20"],
   ...props

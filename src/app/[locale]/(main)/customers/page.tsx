@@ -9,7 +9,11 @@ import CustomerFormModal from "@/features/customer/components/modal/CustomerForm
 import { useCustomerMutations } from "@/features/customer/hooks/useCustomerMutations";
 import type { CustomerFormData } from "@/features/customer/schemas/customer.schema";
 
+import { useTranslations } from "next-intl";
+
 const CustomerPage = () => {
+  const t = useTranslations("customers");
+  const tCommon = useTranslations("common");
   const [createOpen, setCreateOpen] = useState(false);
   const { createMutation } = useCustomerMutations();
 
@@ -23,8 +27,8 @@ const CustomerPage = () => {
 
   return (
     <PageContainer
-      title="Quản lý khách hàng"
-      subTitle="Tìm kiếm, theo dõi và quản lý thông tin khách hàng doanh nghiệp."
+      title={t("list.title")}
+      subTitle={t("list.subTitle")}
       extra={
         <UiButton
           type="primary"
@@ -32,13 +36,13 @@ const CustomerPage = () => {
           icon={<PlusOutlined />}
           onClick={() => setCreateOpen(true)}
         >
-          Thêm mới khách hàng
+          {t("list.createButton")}
         </UiButton>
       }
       breadcrumbs={[
-        { title: "Trang chủ" },
+        { title: tCommon("breadcrumbs.home") },
         {
-          title: "Quản lý khách hàng",
+          title: tCommon("breadcrumbs.customers"),
           href: "/customers",
         },
       ]}

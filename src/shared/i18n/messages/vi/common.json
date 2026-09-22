@@ -1,0 +1,46 @@
+{
+  "buttons": {
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "reset": "Đặt lại",
+    "search": "Tìm kiếm",
+    "filter": "Bộ lọc",
+    "retry": "Thử lại",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "view": "Xem chi tiết"
+  },
+  "labels": {
+    "status": "Trạng thái",
+    "action": "Thao tác",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "noData": "Không có dữ liệu",
+    "all": "Tất cả",
+    "user": "Người dùng"
+  },
+  "header": {
+    "title": "Guarantee Portal",
+    "logout": "Đăng xuất",
+    "loggingOut": "Đang đăng xuất...",
+    "checkingSession": "Đang kiểm tra phiên đăng nhập..."
+  },
+  "breadcrumbs": {
+    "home": "Trang chủ",
+    "guarantees": "Yêu cầu bảo lãnh",
+    "customers": "Quản lý khách hàng",
+    "create": "Tạo mới",
+    "edit": "Chỉnh sửa",
+    "detail": "Chi tiết"
+  },
+  "sidebar": {
+    "guarantees": "Yêu cầu bảo lãnh",
+    "create": "Tạo yêu cầu",
+    "customers": "Quản lý khách hàng",
+    "categories": "Danh mục",
+    "users": "Quản lý người dùng"
+  }
+}

@@ -1,5 +1,4 @@
-"use client";
-import { useRouter } from "next/navigation";
+import { useAppNavigation } from "@/shared/lib/navigation/useAppNavigation";
 import {
   useQuery,
   keepPreviousData,
@@ -43,7 +42,6 @@ export const useGuaranteeHistories = (id: string) => {
 
 export const useSubmitGuarantee = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   return useMutation({
     mutationFn: (id: string) => guaranteeService.submitGuarantee(id),
@@ -64,7 +62,7 @@ export const useSubmitGuarantee = () => {
 
 export const useDeleteGuarantee = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const { push } = useAppNavigation();
   return useMutation({
     mutationFn: (id: string) => guaranteeService.deleteGuarantee(id),
 
@@ -80,7 +78,7 @@ export const useDeleteGuarantee = () => {
       queryClient.invalidateQueries({
         queryKey: [GUARANTEES_QUERY_KEY],
       });
-      router.push("/guarantees");
+      push("/guarantees");
     },
   });
 };

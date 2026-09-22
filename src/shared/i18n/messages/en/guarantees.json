@@ -1,0 +1,193 @@
+{
+  "list": {
+    "title": "Guarantee Management",
+    "subTitle": "Search, track and manage guarantee requests.",
+    "createButton": "Create Guarantee Request",
+    "filter": {
+      "title": "Filters",
+      "keywordLabel": "Keyword",
+      "keywordPlaceholder": "Enter request ID, customer name, CIF",
+      "statusLabel": "Status",
+      "statusPlaceholder": "All",
+      "typeLabel": "Guarantee Type",
+      "typePlaceholder": "All",
+      "createdDateLabel": "Created Date",
+      "fromDatePlaceholder": "From date",
+      "toDatePlaceholder": "To date",
+      "resetButton": "Reset",
+      "searchButton": "Search"
+    },
+    "table": {
+      "total": "Total: {count} requests",
+      "columns": {
+        "id": "Request ID",
+        "customer": "Customer",
+        "cif": "CIF",
+        "guaranteeType": "Guarantee Type",
+        "amount": "Amount",
+        "createdDate": "Created Date",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "tooltips": {
+        "view": "View details",
+        "edit": "Edit",
+        "delete": "Delete request"
+      },
+      "confirmDelete": {
+        "title": "Confirm Delete Request",
+        "description": "Are you sure you want to delete request {id}?",
+        "ok": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "messages": {
+      "deleteSuccess": "Guarantee request deleted successfully!",
+      "deleteFailed": "Failed to delete guarantee request!",
+      "loadErrorTitle": "Unable to load guarantee list",
+      "loadErrorDesc": "An error occurred from the server. Please check your connection."
+    }
+  },
+  "types": {
+    "BID_BOND": "Bid Bond",
+    "PERFORMANCE": "Performance Bond",
+    "ADVANCE_PAYMENT": "Advance Payment Guarantee",
+    "PAYMENT": "Payment Guarantee",
+    "OTHER": "Other Guarantee"
+  },
+  "statuses": {
+    "DRAFT": "Draft",
+    "PENDING_APPROVAL": "Pending Approval",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected"
+  },
+  "create": {
+    "title": "Create Guarantee Request",
+    "subTitle": "Enter information to initiate an electronic guarantee request."
+  },
+  "edit": {
+    "title": "Edit Guarantee Request",
+    "subTitle": "Update and edit guarantee request information."
+  },
+  "detail": {
+    "title": "Guarantee Request Details",
+    "sections": {
+      "generalInfo": "General Information",
+      "guaranteeInfo": "Guarantee Details",
+      "contractInfo": "Contract & Bidding Information",
+      "beneficiaryInfo": "Beneficiary Information",
+      "history": "Processing History"
+    },
+    "labels": {
+      "requestId": "Request ID",
+      "referenceNumber": "Reference Number",
+      "customerName": "Customer",
+      "cif": "CIF Code",
+      "taxCode": "Tax Code",
+      "guaranteeType": "Guarantee Type",
+      "amount": "Guarantee Amount",
+      "validityPeriod": "Validity Period",
+      "days": "{days} days",
+      "contractNumber": "Contract Number",
+      "relatedContractNumber": "Related Contract Number",
+      "tenderNumber": "Tender / Bidding Number",
+      "purpose": "Guarantee Purpose",
+      "beneficiaryName": "Beneficiary",
+      "beneficiaryAddress": "Address",
+      "contactEmail": "Contact Email",
+      "phoneNumber": "Phone Number",
+      "empty": "Not updated",
+      "noHistory": "No processing history yet",
+      "reason": "Reason"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDeleteTitle": "Delete Guarantee Request?",
+      "confirmDeleteDesc": "Are you sure you want to delete this request?",
+      "submitApproval": "Submit for Approval",
+      "confirmSubmitTitle": "Submit for Approval?",
+      "confirmSubmitDesc": "Are you sure you want to submit this request for Checker approval?",
+      "approve": "Approve",
+      "confirmApproveTitle": "Approve Guarantee Request?",
+      "confirmApproveDesc": "Are you sure you want to approve this request?",
+      "reject": "Reject",
+      "rejectModalTitle": "Reject Guarantee Request",
+      "rejectReasonPlaceholder": "Enter rejection reason",
+      "rejectReasonRequired": "Please enter rejection reason"
+    }
+  },
+  "form": {
+    "sections": {
+      "customerInfo": "Customer Information",
+      "guaranteeInfo": "Guarantee Information",
+      "contractInfo": "Contract & Bidding Information",
+      "beneficiaryInfo": "Beneficiary & Contact Information"
+    },
+    "fields": {
+      "cif": "CIF Code",
+      "customerName": "Customer Name",
+      "taxCode": "Tax Code",
+      "guaranteeType": "Guarantee Type",
+      "amount": "Guarantee Amount",
+      "currency": "Currency",
+      "effectiveDate": "Effective Date",
+      "expiryDate": "Expiry Date",
+      "validityDays": "Validity Period",
+      "tenderNumber": "Tender / Bidding No.",
+      "contractNumber": "Contract Number",
+      "relatedContractNumber": "Related Contract No.",
+      "referenceNumber": "Reference Number",
+      "purpose": "Guarantee Purpose",
+      "beneficiaryName": "Beneficiary Name",
+      "beneficiaryAddress": "Beneficiary Address",
+      "contactEmail": "Contact Email",
+      "phoneNumber": "Phone Number"
+    },
+    "placeholders": {
+      "cif": "Enter CIF or search customer",
+      "autoFilled": "Auto-filled",
+      "autoCalculated": "Auto-calculated",
+      "guaranteeType": "Select guarantee type",
+      "amount": "Enter amount (numeric only)",
+      "selectDate": "Select date",
+      "tenderNumber": "Enter tender number",
+      "contractNumber": "Enter contract number (if any)",
+      "relatedContractNumber": "Enter contract number (if any)",
+      "referenceNumber": "Enter reference number (if any)",
+      "purpose": "Enter guarantee purpose",
+      "beneficiaryName": "Enter beneficiary name",
+      "beneficiaryAddress": "Enter address",
+      "contactEmail": "Enter email",
+      "phoneNumber": "Enter phone number (10 digits)",
+      "loading": "Loading data...",
+      "noCustomerFound": "No matching customer found"
+    },
+    "buttons": {
+      "back": "Back",
+      "saveDraft": "Save Draft",
+      "saveChanges": "Save Changes",
+      "submitApproval": "Submit for Approval"
+    },
+    "alerts": {
+      "missingInfoTitle": "Missing Information",
+      "missingInfoContent": "Please enter at least CIF Code and Customer Name to save draft.",
+      "confirmSubmitTitle": "Confirm Submit for Approval",
+      "confirmSubmitContent": "The request will be changed to \"Pending Approval\". Are you sure?"
+    }
+  },
+  "messages": {
+    "createSuccess": "Guarantee request created successfully (DRAFT)",
+    "createFailed": "Failed to create guarantee request",
+    "updateSuccess": "Guarantee request updated successfully",
+    "updateFailed": "Failed to update guarantee request",
+    "deleteSuccess": "Guarantee request deleted successfully",
+    "deleteFailed": "Failed to delete guarantee request",
+    "submitSuccess": "Guarantee request submitted for approval successfully",
+    "submitFailed": "Failed to submit for approval",
+    "approveSuccess": "Guarantee request approved successfully (APPROVED)",
+    "approveFailed": "Failed to approve guarantee request",
+    "rejectSuccess": "Guarantee request rejected (REJECTED)",
+    "rejectFailed": "Failed to reject guarantee request"
+  }
+}

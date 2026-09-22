@@ -3,17 +3,43 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { App } from "antd";
+import { App, ConfigProvider } from "antd";
+import viVN from "antd/locale/vi_VN";
+import enUS from "antd/locale/en_US";
+import dayjs from "dayjs";
+import "dayjs/locale/vi";
 import { AuthProvider } from "@/features/auth/context/AuthContext";
+import { NextIntlClientProvider } from "next-intl";
+import type { AbstractIntlMessages } from "next-intl";
 
-const Provider = ({ children }: { children: React.ReactNode }) => {
+const Provider = ({
+  children,
+  messages,
+  locale,
+}: {
+  children: React.ReactNode;
+  messages?: AbstractIntlMessages;
+  locale?: string;
+}) => {
   const [queryClient] = useState(() => new QueryClient());
+
+  const antdLocale = locale === "en" ? enUS : viVN;
+  if (locale === "vi") {
+    dayjs.locale("vi");
+  } else {
+    dayjs.locale("en");
+  }
+
   return (
     <AntdRegistry>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <App>{children}</App>
-        </AuthProvider>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ConfigProvider locale={antdLocale}>
+            <AuthProvider>
+              <App>{children}</App>
+            </AuthProvider>
+          </ConfigProvider>
+        </NextIntlClientProvider>
       </QueryClientProvider>
     </AntdRegistry>
   );

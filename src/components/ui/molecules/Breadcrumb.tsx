@@ -3,6 +3,9 @@ import React from "react";
 import Link from "next/link";
 import { RightOutlined } from "@ant-design/icons";
 
+import { useLocale } from "next-intl";
+import { withLocale } from "@/shared/i18n/path";
+
 export interface BreadcrumbItem {
   title: string;
   href?: string;
@@ -19,6 +22,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   className = "",
   separator = <RightOutlined className="text-[10px] text-gray-400" />,
 }) => {
+  const locale = useLocale();
   if (!items || items.length === 0) return null;
 
   return (
@@ -32,7 +36,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           return (
             <li key={index} className="flex items-center gap-4">
               {item.href && !isLast ? (
-                <Link href={item.href}>
+                <Link href={withLocale(item.href, locale)}>
                   <span className="text-gray-500">{item.title}</span>
                 </Link>
               ) : (

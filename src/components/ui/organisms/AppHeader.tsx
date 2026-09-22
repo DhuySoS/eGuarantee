@@ -4,18 +4,23 @@ import UserMiniProfile from "../molecules/UserMiniProfile";
 import { BellOutlined, DownOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useAuth } from "@/features/auth/context/AuthContext";
 import useLogout from "@/features/auth/hooks/useLogout";
+import LocaleSwitcher from "@/components/locale-switcher/LocaleSwitcher";
+
+import { useTranslations } from "next-intl";
 
 const AppHeader = () => {
+  const tCommon = useTranslations("common");
   const { user } = useAuth();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   return (
     <div className="flex py-4 px-8 justify-between items-center bg-gray-100 border-b border-b-gray-200">
-      <div className="text-lg font-bold">Guarantee Portal</div>
+      <div className="text-lg font-bold">{tCommon("header.title")}</div>
       <div className="flex items-center gap-6">
+        <LocaleSwitcher />
         <BellOutlined style={{ fontSize: "20px" }} />
         <UserMiniProfile
-          name={user?.username || "Người dùng"}
+          name={user?.username || tCommon("labels.user")}
           role={user?.role || "MAKER"}
           showRole={false}
         />
@@ -23,7 +28,9 @@ const AppHeader = () => {
           menu={{
             items: [
               {
-                label: isLoggingOut ? "Đang đăng xuất..." : "Đăng xuất",
+                label: isLoggingOut
+                  ? tCommon("header.loggingOut")
+                  : tCommon("header.logout"),
                 key: "logout",
                 icon: <LogoutOutlined />,
                 disabled: isLoggingOut,

@@ -3,25 +3,34 @@ import PageContainer from "@/components/ui/organisms/PageContainer";
 import ListView from "@/features/guarantee/components/list/ListView";
 import Link from "next/link";
 import { RoleGate } from "@/features/auth/components/RoleGate";
+import { getTranslations } from "next-intl/server";
 
-const GuaranteeListPage = () => {
+export default async function GuaranteeListPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations("guarantees.list");
+  const tCommon = await getTranslations("common");
+
   return (
     <PageContainer
-      title="Quản lý yêu cầu bảo lãnh"
-      subTitle="Tìm kiếm, theo dõi và quản lý các yêu cầu bảo lãnh."
+      title={t("title")}
+      subTitle={t("subTitle")}
       extra={
         <RoleGate roles="MAKER">
-          <Link href="/guarantees/create">
+          <Link href={`/${locale}/guarantees/create`}>
             <UiButton type="primary" size="large">
-              Tạo yêu cầu bảo lãnh
+              {t("createButton")}
             </UiButton>
           </Link>
         </RoleGate>
       }
       breadcrumbs={[
-        { title: "Trang chủ" },
+        { title: tCommon("breadcrumbs.home") },
         {
-          title: "Yêu cầu bảo lãnh",
+          title: tCommon("breadcrumbs.guarantees"),
           href: "/guarantees",
         },
       ]}
@@ -29,6 +38,4 @@ const GuaranteeListPage = () => {
       <ListView />
     </PageContainer>
   );
-};
-
-export default GuaranteeListPage;
+}

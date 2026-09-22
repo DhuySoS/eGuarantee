@@ -1,19 +1,21 @@
 "use client";
-import UiButton from "@/components/ui/atoms/UiButton";
 import PageContainer from "@/components/ui/organisms/PageContainer";
 import GuaranteeForm from "@/features/guarantee/components/form/GuaranteeForm";
 import { useGuaranteeMutations } from "@/features/guarantee/hooks/useGuaranteeMutations";
 import { GuaranteeFormData } from "@/features/guarantee/schemas/guarantee.schema";
-import { useRouter } from "next/navigation";
+import { useAppNavigation } from "@/shared/lib/navigation/useAppNavigation";
+import { useTranslations } from "next-intl";
 
 const GuaranteeCreatePage = () => {
-  const router = useRouter();
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
+  const { push } = useAppNavigation();
   const { createMutation, submitMutation } = useGuaranteeMutations();
 
   const handleSaveDraft = (data: GuaranteeFormData) => {
     createMutation.mutate(data, {
       onSuccess: () => {
-        router.push("/guarantees");
+        push("/guarantees");
       },
     });
   };
@@ -23,25 +25,25 @@ const GuaranteeCreatePage = () => {
       onSuccess: (newRecord) => {
         submitMutation.mutate(newRecord.id, {
           onSuccess: () => {
-            router.push("/guarantees");
+            push("/guarantees");
           },
         });
       },
     });
   };
+
   return (
     <PageContainer
-      title="Tạo mới yêu cầu bảo lãnh"
-      subTitle="Nhập thông tin để khởi tạo hồ sơ yêu cầu bảo lãnh điện tử."
-
+      title={t("create.title")}
+      subTitle={t("create.subTitle")}
       breadcrumbs={[
-        { title: "Trang chủ" },
+        { title: tCommon("breadcrumbs.home") },
         {
-          title: "Yêu cầu bảo lãnh",
+          title: tCommon("breadcrumbs.guarantees"),
           href: "/guarantees",
         },
         {
-          title: "Tạo mới",
+          title: tCommon("breadcrumbs.create"),
           href: "/guarantees/create",
         },
       ]}

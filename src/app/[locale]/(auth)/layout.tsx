@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Spin } from "antd";
 import AuthTemplate from "@/components/templates/AuthTemplate";
 import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAppNavigation } from "@/shared/lib/navigation/useAppNavigation";
 
 export default function AuthLayout({
   children,
@@ -12,13 +13,12 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
-
+  const { replace } = useAppNavigation();
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.replace("/guarantees");
+      replace("/guarantees");
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, replace]);
 
   if (isLoading) {
     return (
@@ -26,11 +26,6 @@ export default function AuthLayout({
         <Spin size="large" />
       </div>
     );
-  }
-
-  // Đã đăng nhập -> không render AuthTemplate để tránh nhấp nháy
-  if (isAuthenticated) {
-    return null;
   }
 
   return <AuthTemplate>{children}</AuthTemplate>;

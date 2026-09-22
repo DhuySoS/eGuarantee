@@ -3,17 +3,15 @@
 import { Card, Col, Descriptions, Row, Tag, Timeline } from "antd";
 import { GUARANTEE_STATUS_TAG_CLASS } from "../../constants/guarantee";
 import type { Guarantee, ProcessingHistory } from "../../types/guarantee";
-
 import CheckerActions from "./CheckerActions";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 
 interface CheckerDetailProps {
   guarantee: Guarantee;
   histories: ProcessingHistory[];
-
   onApprove?: () => void;
   onReject?: (reason: string) => void;
-
   isApproving?: boolean;
   isRejecting?: boolean;
 }
@@ -68,9 +66,14 @@ export default function CheckerDetail({
   guarantee,
   histories,
 }: CheckerDetailProps) {
-  const guaranteeTypeLabel = GUARANTEE_TYPE_LABELS[guarantee.guaranteeType];
-
-  const statusLabel = STATUS_LABELS[guarantee.status];
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
+  const guaranteeTypeLabel = t.has(`types.${guarantee.guaranteeType}`)
+    ? t(`types.${guarantee.guaranteeType}`)
+    : GUARANTEE_TYPE_LABELS[guarantee.guaranteeType] ?? guarantee.guaranteeType;
+  const statusLabel = t.has(`statuses.${guarantee.status}`)
+    ? t(`statuses.${guarantee.status}`)
+    : STATUS_LABELS[guarantee.status] ?? guarantee.status;
 
   return (
     <div className="min-h-screen ">
@@ -84,25 +87,25 @@ export default function CheckerDetail({
             {/* Customer */}
 
             <Card
-              title="Thông tin khách hàng"
+              title={t("form.sections.customerInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Tên khách hàng">
+                <Descriptions.Item label={t("detail.labels.customerName")}>
                   {guarantee.customerName}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="CIF">
+                <Descriptions.Item label={t("detail.labels.cif")}>
                   {guarantee.customerCif}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Mã số thuế">
+                <Descriptions.Item label={t("detail.labels.taxCode")}>
                   {guarantee.taxCode || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Địa chỉ">
+                <Descriptions.Item label={t("detail.labels.beneficiaryAddress")}>
                   {guarantee.customerAddress || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -111,49 +114,48 @@ export default function CheckerDetail({
             {/* Guarantee */}
 
             <Card
-              title="Thông tin bảo lãnh"
+              title={t("form.sections.guaranteeInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Loại bảo lãnh">
+                <Descriptions.Item label={t("detail.labels.guaranteeType")}>
                   {guaranteeTypeLabel}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số tiền">
-                  {guarantee.guaranteeAmount.toLocaleString("vi-VN")}
+                <Descriptions.Item label={t("detail.labels.amount")}>
+                  <span className="font-semibold">
+                    {guarantee.guaranteeAmount.toLocaleString("vi-VN")}{" "}
+                    {guarantee.currency}
+                  </span>
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Loại tiền">
-                  {guarantee.currency}
-                </Descriptions.Item>
-
-                <Descriptions.Item label="Ngày hiệu lực">
+                <Descriptions.Item label={t("form.fields.effectiveDate")}>
                   {guarantee.effectiveDate}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Ngày hết hạn">
+                <Descriptions.Item label={t("form.fields.expiryDate")}>
                   {guarantee.expiryDate}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số ngày bảo lãnh">
-                  {guarantee.guaranteeDays}
+                <Descriptions.Item label={t("detail.labels.validityPeriod")}>
+                  {t("detail.labels.days", { days: guarantee.guaranteeDays })}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số dự thầu">
+                <Descriptions.Item label={t("detail.labels.tenderNumber")}>
                   {guarantee.tenderNumber || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số hợp đồng">
+                <Descriptions.Item label={t("detail.labels.relatedContractNumber")}>
                   {guarantee.relatedContractNumber || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Số tham chiếu">
+                <Descriptions.Item label={t("detail.labels.referenceNumber")}>
                   {guarantee.referenceNumber || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Mục đích">
+                <Descriptions.Item label={t("detail.labels.purpose")}>
                   {guarantee.purpose || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -162,17 +164,17 @@ export default function CheckerDetail({
             {/* Beneficiary */}
 
             <Card
-              title="Thông tin bên thụ hưởng"
+              title={t("detail.sections.beneficiaryInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Tên">
+                <Descriptions.Item label={t("detail.labels.beneficiaryName")}>
                   {guarantee.beneficiaryName}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Địa chỉ">
+                <Descriptions.Item label={t("detail.labels.beneficiaryAddress")}>
                   {guarantee.beneficiaryAddress || "-"}
                 </Descriptions.Item>
               </Descriptions>
@@ -187,14 +189,14 @@ export default function CheckerDetail({
             {/* History */}
 
             <Card
-              title="Lịch sử xử lý"
+              title={t("detail.sections.history")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               {histories.length === 0 ? (
                 <div className="py-4 text-sm text-gray-500">
-                  Chưa có lịch sử xử lý.
+                  {t("detail.labels.noHistory")}
                 </div>
               ) : (
                 <Timeline
@@ -213,11 +215,13 @@ export default function CheckerDetail({
                           {ROLE_LABELS[history.role] ?? history.role ?? "-"}
                         </div>
 
-                        {history.timestamp
-                          ? dayjs(history.timestamp).format(
-                              "DD/MM/YYYY HH:mm:ss",
-                            )
-                          : "-"}
+                        <div className="mt-1 text-gray-500">
+                          {history.timestamp
+                            ? dayjs(history.timestamp).format(
+                                "DD/MM/YYYY HH:mm:ss",
+                              )
+                            : "-"}
+                        </div>
 
                         {history.comment && (
                           <div className="mt-1">{history.comment}</div>
@@ -232,35 +236,37 @@ export default function CheckerDetail({
             {/* Additional information */}
 
             <Card
-              title="Thông tin bổ sung"
+              title={t("detail.sections.generalInfo")}
               variant="outlined"
               style={CARD_STYLE}
               styles={CARD_STYLES}
             >
               <Descriptions column={1} size="small" styles={DESCRIPTION_STYLES}>
-                <Descriptions.Item label="Request ID">
+                <Descriptions.Item label={t("detail.labels.requestId")}>
                   {guarantee.id}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Trạng thái">
-                  {statusLabel}
+                <Descriptions.Item label={tCommon("labels.status")}>
+                  <Tag color={GUARANTEE_STATUS_TAG_CLASS[guarantee.status]}>
+                    {statusLabel}
+                  </Tag>
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Người tạo">
-                  {guarantee.createdByFullName || guarantee.createdBy}
-                </Descriptions.Item>
-
-                <Descriptions.Item label="Ngày tạo">
+                <Descriptions.Item label={tCommon("labels.createdAt")}>
                   {dayjs(guarantee.createdDate).format("DD/MM/YYYY HH:mm:ss")}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Người cập nhật">
-                  {guarantee.updatedByFullName || guarantee.updatedBy || "-"}
+                <Descriptions.Item label={tCommon("labels.user")}>
+                  {guarantee.createdByFullName || guarantee.createdBy || "-"}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Ngày cập nhật">
+                <Descriptions.Item label={tCommon("labels.updatedAt")}>
                   {dayjs(guarantee.updatedDate).format("DD/MM/YYYY HH:mm:ss") ||
                     "-"}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={tCommon("labels.user")}>
+                  {guarantee.updatedByFullName || guarantee.updatedBy || "-"}
                 </Descriptions.Item>
               </Descriptions>
             </Card>
@@ -269,7 +275,7 @@ export default function CheckerDetail({
 
             {guarantee.status === "REJECTED" && (
               <Card
-                title="Lý do từ chối"
+                title={t("detail.labels.reason")}
                 variant="outlined"
                 style={CARD_STYLE}
                 styles={CARD_STYLES}
@@ -284,7 +290,7 @@ export default function CheckerDetail({
 
                   return (
                     <div className="text-sm leading-6 text-gray-700">
-                      {rejectHistory?.comment || "Không có lý do từ chối."}
+                      {rejectHistory?.comment || "-"}
                     </div>
                   );
                 })()}

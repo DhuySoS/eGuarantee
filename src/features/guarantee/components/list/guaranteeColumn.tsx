@@ -21,6 +21,7 @@ import {
   GUARANTEE_TYPE_LABELS,
 } from "../../constants/guarantee";
 import { formatCurrency } from "@/utils/format";
+import { withLocale } from "@/shared/i18n/path";
 
 export type SortableGuaranteeField =
   "createdDate" | "guaranteeAmount" | "customerName";
@@ -30,61 +31,106 @@ export interface GuaranteeColumnOptions {
   sortDirection?: "asc" | "desc";
   role?: UserRole;
   onDelete?: (record: GuaranteeListItem) => void;
+  t?: (key: string, params?: Record<string, any>) => string;
+  tType?: (key: string) => string;
+  tStatus?: (key: string) => string;
+  locale?: string;
 }
 
 export const getGuaranteeColumns = (
   options?: GuaranteeColumnOptions,
 ): UiTableColumnsType<GuaranteeListItem> => {
-  const { sortBy, sortDirection, role = "MAKER", onDelete } = options || {};
+  const {
+    sortBy,
+    sortDirection,
+    role = "MAKER",
+    onDelete,
+    t,
+    tType,
+    tStatus,
+    locale = "vi",
+  } = options || {};
 
   const getSortOrder = (field: SortableGuaranteeField) => {
     if (sortBy !== field) return null;
     return sortDirection === "asc" ? "ascend" : "descend";
   };
 
+  const getStatusLabel = (status: GuaranteeStatus) => {
+    if (tStatus) {
+      try {
+        return tStatus(status);
+      } catch {
+        return GUARANTEE_STATUS_LABELS[status] ?? status;
+      }
+    }
+    return GUARANTEE_STATUS_LABELS[status] ?? status;
+  };
+
+  const getTypeLabel = (type: GuaranteeType) => {
+    if (tType) {
+      try {
+        return tType(type);
+      } catch {
+        return GUARANTEE_TYPE_LABELS[type] ?? type;
+      }
+    }
+    return GUARANTEE_TYPE_LABELS[type] ?? type;
+  };
+
   return [
     {
-      title: "Mã yêu cầu",
+      title: t ? t("table.columns.id") : "Mã yêu cầu",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Khách hàng",
+      title: t ? t("table.columns.customer") : "Khách hàng",
       dataIndex: "customerName",
       key: "customerName",
       sorter: true,
       sortOrder: getSortOrder("customerName"),
-      showSorterTooltip: { title: "Nhấp để sắp xếp theo tên khách hàng" },
+      showSorterTooltip: {
+        title: t
+          ? t("table.columns.customer")
+          : "Nhấp để sắp xếp theo tên khách hàng",
+      },
     },
     {
-      title: "CIF",
+      title: t ? t("table.columns.cif") : "CIF",
       dataIndex: "customerCif",
       key: "customerCif",
       className: "text-gray-700",
     },
     {
-      title: "Loại bảo lãnh",
+      title: t ? t("table.columns.guaranteeType") : "Loại bảo lãnh",
       dataIndex: "guaranteeType",
       key: "guaranteeType",
-      render: (type: GuaranteeType) => GUARANTEE_TYPE_LABELS[type] ?? type,
+      render: (type: GuaranteeType) => getTypeLabel(type),
     },
     {
-      title: "Số tiền",
+      title: t ? t("table.columns.amount") : "Số tiền",
       dataIndex: "guaranteeAmount",
       key: "guaranteeAmount",
       sorter: true,
       sortOrder: getSortOrder("guaranteeAmount"),
-      showSorterTooltip: { title: "Nhấp để sắp xếp theo số tiền" },
+      showSorterTooltip: {
+        title: t ? t("table.columns.amount") : "Nhấp để sắp xếp theo số tiền",
+      },
       render: (amount: number, record: GuaranteeListItem) =>
         formatCurrency(amount, record.currency),
     },
     {
-      title: "Ngày tạo",
+      title: t ? t("table.columns.createdDate") : "Ngày tạo",
       dataIndex: "createdDate",
       key: "createdDate",
       sorter: true,
       sortOrder: getSortOrder("createdDate"),
-      showSorterTooltip: { title: "Nhấp để sắp xếp theo ngày tạo" },
+      showSorterTooltip: {
+        title: t
+          ? t("table.columns.createdDate")
+          : "Nhấp để sắp xếp theo ngày tạo",
+      },
       render: (date: string) => (
         <span className="text-gray-700">
           {dayjs(date).format("DD/MM/YYYY")}
@@ -92,7 +138,7 @@ export const getGuaranteeColumns = (
       ),
     },
     {
-      title: "Trạng thái",
+      title: t ? t("table.columns.status") : "Trạng thái",
       dataIndex: "status",
       key: "status",
       align: "center",
@@ -103,12 +149,12 @@ export const getGuaranteeColumns = (
           className={`rounded-md w-24 text-${GUARANTEE_STATUS_TAG_CLASS[status]}`}
           style={{ textAlign: "center" }}
         >
-          {GUARANTEE_STATUS_LABELS[status] ?? status}
+          {getStatusLabel(status)}
         </UiTag>
       ),
     },
     {
-      title: "Thao tác",
+      title: t ? t("table.columns.actions") : "Thao tác",
       key: "action",
       align: "center",
       width: 130,
@@ -128,9 +174,9 @@ export const getGuaranteeColumns = (
         return (
           <div className="flex items-center justify-center gap-1.5">
             {canView && (
-              <Tooltip title="Xem chi tiết">
+              <Tooltip title={t ? t("table.tooltips.view") : "Xem chi tiết"}>
                 <Link
-                  href={`/guarantees/${record.id}`}
+                  href={withLocale(`/guarantees/${record.id}`, locale)}
                   className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
                 >
                   <EyeOutlined className="text-base" />
@@ -139,9 +185,9 @@ export const getGuaranteeColumns = (
             )}
 
             {canEdit && (
-              <Tooltip title="Chỉnh sửa">
+              <Tooltip title={t ? t("table.tooltips.edit") : "Chỉnh sửa"}>
                 <Link
-                  href={`/guarantees/${record.id}/edit`}
+                  href={withLocale(`/guarantees/${record.id}/edit`, locale)}
                   className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
                 >
                   <EditOutlined className="text-base" />
@@ -151,14 +197,24 @@ export const getGuaranteeColumns = (
 
             {canDelete && (
               <Popconfirm
-                title="Xác nhận xóa yêu cầu"
-                description={`Bạn có chắc chắn muốn xóa yêu cầu ${record.id}?`}
+                title={
+                  t
+                    ? t("table.confirmDelete.title")
+                    : "Xác nhận xóa yêu cầu"
+                }
+                description={
+                  t
+                    ? t("table.confirmDelete.description", { id: record.id })
+                    : `Bạn có chắc chắn muốn xóa yêu cầu ${record.id}?`
+                }
                 onConfirm={() => onDelete?.(record)}
-                okText="Xóa"
-                cancelText="Hủy"
+                okText={t ? t("table.confirmDelete.ok") : "Xóa"}
+                cancelText={t ? t("table.confirmDelete.cancel") : "Hủy"}
                 okButtonProps={{ danger: true }}
               >
-                <Tooltip title="Xóa yêu cầu">
+                <Tooltip
+                  title={t ? t("table.tooltips.delete") : "Xóa yêu cầu"}
+                >
                   <button
                     type="button"
                     className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors cursor-pointer"

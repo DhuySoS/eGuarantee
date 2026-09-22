@@ -10,6 +10,8 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { stripLocale, withLocale } from "@/shared/i18n/path";
 import React, { useState } from "react";
 import UserMiniProfile from "../molecules/UserMiniProfile";
 import UiButton from "../atoms/UiButton";
@@ -19,7 +21,7 @@ import type { UserRole } from "@/features/guarantee/types/guarantee";
 
 interface NavItem {
   key: string;
-  label: string;
+  labelKey: "guarantees" | "create" | "customers" | "categories" | "users";
   href?: string;
   icon: React.ReactNode;
   roles?: UserRole[];
@@ -28,44 +30,47 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   {
     key: "guarantees",
-    label: "Yêu cầu bảo lãnh",
+    labelKey: "guarantees",
     href: "/guarantees",
     icon: <FileTextOutlined />,
   },
   {
     key: "create",
-    label: "Tạo yêu cầu",
+    labelKey: "create",
     href: "/guarantees/create",
     icon: <PlusCircleOutlined />,
     roles: ["MAKER"],
   },
   {
     key: "customers",
-    label: "Quản lý khách hàng",
+    labelKey: "customers",
     href: "/customers",
     icon: <TeamOutlined />,
   },
   {
     key: "categories",
-    label: "Danh mục",
+    labelKey: "categories",
     icon: <ReadOutlined />,
   },
   {
     key: "users",
-    label: "Quản lý người dùng",
+    labelKey: "users",
     icon: <UserOutlined />,
   },
 ];
 
 const AppSidebar = () => {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const locale = useLocale();
+  const pathname = stripLocale(rawPathname);
+  const tCommon = useTranslations("common");
   const [collapsed, setCollapsed] = useState(false);
 
   const { user } = useAuth();
   const { hasRole } = useRole();
 
   const visibleNavItems = NAV_ITEMS.filter(
-    (item) => !item.roles || hasRole(item.roles)
+    (item) => !item.roles || hasRole(item.roles),
   );
 
   return (
@@ -88,11 +93,13 @@ const AppSidebar = () => {
                   ? pathname.startsWith(item.href)
                   : false;
 
+          const label = tCommon(`sidebar.${item.labelKey}`);
+
           return (
             <Link
               key={item.key}
-              href={item.href || ""}
-              title={collapsed ? item.label : undefined}
+              href={item.href ? withLocale(item.href, locale) : ""}
+              title={collapsed ? label : undefined}
               className={`relative flex items-center ${
                 collapsed ? "justify-center px-0" : "gap-3 px-3"
               } py-3.5 rounded-lg text-sm font-medium transition-colors ${
@@ -121,7 +128,7 @@ const AppSidebar = () => {
                     isActive ? "text-blue-600" : "text-gray-600"
                   }`}
                 >
-                  {item.label}
+                  {label}
                 </span>
               )}
             </Link>
@@ -136,7 +143,7 @@ const AppSidebar = () => {
         }`}
       >
         <UserMiniProfile
-          name={user?.username || "Người dùng"}
+          name={user?.username || tCommon("labels.user")}
           role={user?.role || "MAKER"}
           showRole={true}
           collapsed={collapsed}

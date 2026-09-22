@@ -1,0 +1,193 @@
+{
+  "list": {
+    "title": "Quản lý yêu cầu bảo lãnh",
+    "subTitle": "Tìm kiếm, theo dõi và quản lý các yêu cầu bảo lãnh.",
+    "createButton": "Tạo yêu cầu bảo lãnh",
+    "filter": {
+      "title": "Bộ lọc",
+      "keywordLabel": "Từ khóa",
+      "keywordPlaceholder": "Nhập mã yêu cầu, tên khách hàng, CIF",
+      "statusLabel": "Trạng thái",
+      "statusPlaceholder": "Tất cả",
+      "typeLabel": "Loại bảo lãnh",
+      "typePlaceholder": "Tất cả",
+      "createdDateLabel": "Ngày tạo",
+      "fromDatePlaceholder": "Từ ngày",
+      "toDatePlaceholder": "Đến ngày",
+      "resetButton": "Đặt lại",
+      "searchButton": "Tìm kiếm"
+    },
+    "table": {
+      "total": "Tổng số: {count} yêu cầu",
+      "columns": {
+        "id": "Mã yêu cầu",
+        "customer": "Khách hàng",
+        "cif": "CIF",
+        "guaranteeType": "Loại bảo lãnh",
+        "amount": "Số tiền",
+        "createdDate": "Ngày tạo",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      },
+      "tooltips": {
+        "view": "Xem chi tiết",
+        "edit": "Chỉnh sửa",
+        "delete": "Xóa yêu cầu"
+      },
+      "confirmDelete": {
+        "title": "Xác nhận xóa yêu cầu",
+        "description": "Bạn có chắc chắn muốn xóa yêu cầu {id}?",
+        "ok": "Xóa",
+        "cancel": "Hủy"
+      }
+    },
+    "messages": {
+      "deleteSuccess": "Xóa yêu cầu bảo lãnh thành công!",
+      "deleteFailed": "Xóa yêu cầu bảo lãnh thất bại!",
+      "loadErrorTitle": "Không thể tải danh sách yêu cầu bảo lãnh",
+      "loadErrorDesc": "Đã có lỗi xảy ra từ hệ thống hoặc máy chủ. Vui lòng kiểm tra lại kết nối."
+    }
+  },
+  "types": {
+    "BID_BOND": "Bảo lãnh dự thầu",
+    "PERFORMANCE": "Bảo lãnh thực hiện hợp đồng",
+    "ADVANCE_PAYMENT": "Bảo lãnh tạm ứng",
+    "PAYMENT": "Bảo lãnh thanh toán",
+    "OTHER": "Bảo lãnh khác"
+  },
+  "statuses": {
+    "DRAFT": "Bản nháp",
+    "PENDING_APPROVAL": "Chờ duyệt",
+    "APPROVED": "Đã duyệt",
+    "REJECTED": "Từ chối"
+  },
+  "create": {
+    "title": "Tạo mới yêu cầu bảo lãnh",
+    "subTitle": "Nhập thông tin để khởi tạo hồ sơ yêu cầu bảo lãnh điện tử."
+  },
+  "edit": {
+    "title": "Chỉnh sửa yêu cầu bảo lãnh",
+    "subTitle": "Cập nhật và chỉnh sửa thông tin yêu cầu bảo lãnh."
+  },
+  "detail": {
+    "title": "Chi tiết yêu cầu bảo lãnh",
+    "sections": {
+      "generalInfo": "Thông tin chung",
+      "guaranteeInfo": "Chi tiết bảo lãnh",
+      "contractInfo": "Thông tin hợp đồng & hồ sơ",
+      "beneficiaryInfo": "Thông tin bên thụ hưởng",
+      "history": "Lịch sử xử lý"
+    },
+    "labels": {
+      "requestId": "Mã yêu cầu",
+      "referenceNumber": "Số tham chiếu",
+      "customerName": "Khách hàng",
+      "cif": "Mã CIF",
+      "taxCode": "Mã số thuế",
+      "guaranteeType": "Loại bảo lãnh",
+      "amount": "Số tiền bảo lãnh",
+      "validityPeriod": "Thời hạn hiệu lực",
+      "days": "{days} ngày",
+      "contractNumber": "Số hợp đồng",
+      "relatedContractNumber": "Số hợp đồng liên quan",
+      "tenderNumber": "Số hiệu gói thầu",
+      "purpose": "Mục đích bảo lãnh",
+      "beneficiaryName": "Bên thụ hưởng",
+      "beneficiaryAddress": "Địa chỉ",
+      "contactEmail": "Email liên hệ",
+      "phoneNumber": "Số điện thoại",
+      "empty": "Chưa cập nhật",
+      "noHistory": "Chưa có lịch sử xử lý",
+      "reason": "Lý do"
+    },
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "confirmDeleteTitle": "Xóa yêu cầu bảo lãnh?",
+      "confirmDeleteDesc": "Bạn có chắc chắn muốn xóa yêu cầu này?",
+      "submitApproval": "Gửi duyệt",
+      "confirmSubmitTitle": "Gửi yêu cầu duyệt?",
+      "confirmSubmitDesc": "Bạn có chắc chắn muốn gửi yêu cầu này để Checker duyệt?",
+      "approve": "Phê duyệt",
+      "confirmApproveTitle": "Phê duyệt yêu cầu bảo lãnh?",
+      "confirmApproveDesc": "Bạn có chắc chắn muốn phê duyệt yêu cầu này?",
+      "reject": "Từ chối",
+      "rejectModalTitle": "Từ chối yêu cầu bảo lãnh",
+      "rejectReasonPlaceholder": "Nhập lý do từ chối",
+      "rejectReasonRequired": "Vui lòng nhập lý do từ chối"
+    }
+  },
+  "form": {
+    "sections": {
+      "customerInfo": "Thông tin khách hàng",
+      "guaranteeInfo": "Thông tin bảo lãnh",
+      "contractInfo": "Thông tin hợp đồng & Đấu thầu",
+      "beneficiaryInfo": "Bên thụ hưởng & Liên hệ"
+    },
+    "fields": {
+      "cif": "Mã CIF",
+      "customerName": "Tên khách hàng",
+      "taxCode": "Mã số thuế",
+      "guaranteeType": "Loại bảo lãnh",
+      "amount": "Số tiền bảo lãnh",
+      "currency": "Loại tiền",
+      "effectiveDate": "Ngày hiệu lực",
+      "expiryDate": "Ngày hết hạn",
+      "validityDays": "Số ngày hiệu lực",
+      "tenderNumber": "Số hiệu thầu",
+      "contractNumber": "Số hợp đồng",
+      "relatedContractNumber": "Số hợp đồng liên quan",
+      "referenceNumber": "Số tham chiếu",
+      "purpose": "Mục đích bảo lãnh",
+      "beneficiaryName": "Tên bên thụ hưởng",
+      "beneficiaryAddress": "Địa chỉ bên thụ hưởng",
+      "contactEmail": "Email liên hệ",
+      "phoneNumber": "Số điện thoại"
+    },
+    "placeholders": {
+      "cif": "Nhập CIF hoặc tìm kiếm khách hàng",
+      "autoFilled": "Tự động hiển thị",
+      "autoCalculated": "Tự động tính",
+      "guaranteeType": "Chọn loại bảo lãnh",
+      "amount": "Nhập số tiền (bắt buộc nhập số)",
+      "selectDate": "Chọn ngày",
+      "tenderNumber": "Nhập số hiệu thầu",
+      "contractNumber": "Nhập số hợp đồng (nếu có)",
+      "relatedContractNumber": "Nhập số hợp đồng (nếu có)",
+      "referenceNumber": "Nhập số tham chiếu (nếu có)",
+      "purpose": "Nhập mục đích bảo lãnh",
+      "beneficiaryName": "Nhập tên bên thụ hưởng",
+      "beneficiaryAddress": "Nhập địa chỉ",
+      "contactEmail": "Nhập email",
+      "phoneNumber": "Nhập số điện thoại (10 chữ số)",
+      "loading": "Đang tải dữ liệu...",
+      "noCustomerFound": "Không tìm thấy khách hàng phù hợp"
+    },
+    "buttons": {
+      "back": "Quay lại",
+      "saveDraft": "Lưu nháp",
+      "saveChanges": "Lưu thay đổi",
+      "submitApproval": "Gửi duyệt"
+    },
+    "alerts": {
+      "missingInfoTitle": "Thiếu thông tin",
+      "missingInfoContent": "Vui lòng nhập tối thiểu Mã CIF và Tên khách hàng để lưu nháp.",
+      "confirmSubmitTitle": "Xác nhận gửi phê duyệt",
+      "confirmSubmitContent": "Hồ sơ sẽ chuyển sang trạng thái \"Chờ phê duyệt\". Bạn có chắc chắn?"
+    }
+  },
+  "messages": {
+    "createSuccess": "Tạo hồ sơ bảo lãnh thành công (DRAFT)",
+    "createFailed": "Lỗi khi tạo hồ sơ",
+    "updateSuccess": "Cập nhật hồ sơ thành công",
+    "updateFailed": "Lỗi khi cập nhật hồ sơ",
+    "deleteSuccess": "Xóa hồ sơ thành công",
+    "deleteFailed": "Lỗi khi xóa hồ sơ",
+    "submitSuccess": "Gửi phê duyệt hồ sơ thành công",
+    "submitFailed": "Lỗi khi gửi phê duyệt",
+    "approveSuccess": "Phê duyệt hồ sơ thành công (APPROVED)",
+    "approveFailed": "Lỗi khi phê duyệt hồ sơ",
+    "rejectSuccess": "Đã từ chối hồ sơ bảo lãnh (REJECTED)",
+    "rejectFailed": "Lỗi khi từ chối hồ sơ"
+  }
+}

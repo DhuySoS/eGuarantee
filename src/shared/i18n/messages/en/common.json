@@ -1,0 +1,46 @@
+{
+  "buttons": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "confirm": "Confirm",
+    "reset": "Reset",
+    "search": "Search",
+    "filter": "Filter",
+    "retry": "Retry",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View Details"
+  },
+  "labels": {
+    "status": "Status",
+    "action": "Action",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "noData": "No Data",
+    "all": "All",
+    "user": "User"
+  },
+  "header": {
+    "title": "Guarantee Portal",
+    "logout": "Log out",
+    "loggingOut": "Logging out...",
+    "checkingSession": "Checking session..."
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "guarantees": "Guarantees",
+    "customers": "Customer Management",
+    "create": "Create",
+    "edit": "Edit",
+    "detail": "Detail"
+  },
+  "sidebar": {
+    "guarantees": "Guarantees",
+    "create": "Create Request",
+    "customers": "Customer Management",
+    "categories": "Categories",
+    "users": "User Management"
+  }
+}

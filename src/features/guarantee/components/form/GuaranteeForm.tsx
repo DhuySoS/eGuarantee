@@ -25,16 +25,15 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 import {
   GuaranteeFormData,
   guaranteeFormSchema,
 } from "@/features/guarantee/schemas/guarantee.schema";
 import { Guarantee } from "@/features/guarantee/types/guarantee";
-import {
-  CURRENCY_OPTIONS,
-  GUARANTEE_TYPE_OPTIONS,
-} from "@/features/guarantee/constants/guarantee";
+import { CURRENCY_OPTIONS } from "@/features/guarantee/constants/guarantee";
 import { useCustomers } from "../../hooks/useGuaranteeMutations";
+import { useGuaranteeOptions } from "../../hooks/useGuaranteeOptions";
 
 const { TextArea } = Input;
 
@@ -89,6 +88,8 @@ export default function GuaranteeForm({
   const router = useRouter();
   const isEdit = !!initialData;
   const { modal } = App.useApp();
+  const t = useTranslations("guarantees");
+  const tCommon = useTranslations("common");
 
   const {
     control,
@@ -161,6 +162,8 @@ export default function GuaranteeForm({
       }));
   }, [customers, customerCifValue]);
 
+  const { guaranteeTypeOptions } = useGuaranteeOptions();
+
   // Chuẩn hóa dữ liệu form, loại bỏ các trường thừa từ initialData trước khi gửi
   const cleanFormData = (raw: any): GuaranteeFormData => ({
     customerCif: raw.customerCif || "",
@@ -186,9 +189,8 @@ export default function GuaranteeForm({
     const values = watch();
     if (!values.customerCif || !values.customerName) {
       modal.warning({
-        title: "Thiếu thông tin",
-        content:
-          "Vui lòng nhập tối thiểu Mã CIF và Tên khách hàng để lưu nháp.",
+        title: t("form.alerts.missingInfoTitle"),
+        content: t("form.alerts.missingInfoContent"),
       });
       return;
     }
@@ -197,12 +199,11 @@ export default function GuaranteeForm({
 
   const onValidSubmit = (data: GuaranteeFormData) => {
     modal.confirm({
-      title: "Xác nhận gửi phê duyệt",
+      title: t("form.alerts.confirmSubmitTitle"),
       icon: <ExclamationCircleOutlined />,
-      content:
-        'Hồ sơ sẽ chuyển sang trạng thái "Chờ phê duyệt". Bạn có chắc chắn?',
-      okText: "Gửi phê duyệt",
-      cancelText: "Hủy",
+      content: t("form.alerts.confirmSubmitContent"),
+      okText: t("form.buttons.submitApproval"),
+      cancelText: tCommon("buttons.cancel"),
       onOk: () => onSubmitForApproval(cleanFormData(data)),
     });
   };
@@ -212,10 +213,10 @@ export default function GuaranteeForm({
       onSubmit={handleSubmit(onValidSubmit)}
       className="space-y-4 max-w-5xl mx-auto pb-6"
     >
-      <Card title=" Thông tin khách hàng" size="small">
+      <Card title={t("form.sections.customerInfo")} size="small">
         <Row gutter={[16, 16]}>
           <Col xs={24} md={8}>
-            <Field label="CIF" required error={errors.customerCif?.message}>
+            <Field label={t("form.fields.cif")} required error={errors.customerCif?.message}>
               <Controller
                 name="customerCif"
                 control={control}
@@ -261,17 +262,17 @@ export default function GuaranteeForm({
                     notFoundContent={
                       isLoadingCustomers ? (
                         <div className="py-2 px-3 text-center text-xs text-gray-400">
-                          Đang tải dữ liệu...
+                          {t("form.placeholders.loading")}
                         </div>
                       ) : (
                         <div className="py-2 px-3 text-center text-xs text-gray-400">
-                          Không tìm thấy khách hàng phù hợp
+                          {t("form.placeholders.noCustomerFound")}
                         </div>
                       )
                     }
                   >
                     <Input
-                      placeholder="Nhập CIF hoặc tìm kiếm khách hàng"
+                      placeholder={t("form.placeholders.cif")}
                       maxLength={12}
                       allowClear
                       onClick={() => setCifDropdownOpen(true)}
@@ -289,14 +290,14 @@ export default function GuaranteeForm({
             </Field>
           </Col>
           <Col xs={24} md={8}>
-            <Field label="Tên khách hàng">
+            <Field label={t("form.fields.customerName")}>
               <Controller
                 name="customerName"
                 control={control}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    placeholder="Tự động hiển thị"
+                    placeholder={t("form.placeholders.autoFilled")}
                     disabled
                     className="bg-gray-50 text-gray-800 font-medium"
                   />
@@ -306,14 +307,14 @@ export default function GuaranteeForm({
           </Col>
 
           <Col xs={24} md={8}>
-            <Field label="Mã số thuế" error={errors.taxCode?.message}>
+            <Field label={t("form.fields.taxCode")} error={errors.taxCode?.message}>
               <Controller
                 name="taxCode"
                 control={control}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    placeholder="Tự động hiển thị"
+                    placeholder={t("form.placeholders.autoFilled")}
                     disabled
                     className="bg-gray-50 text-gray-800 font-medium"
                   />
@@ -324,11 +325,11 @@ export default function GuaranteeForm({
         </Row>
       </Card>
 
-      <Card title=" Thông tin bảo lãnh" size="small">
+      <Card title={t("form.sections.guaranteeInfo")} size="small">
         <Row gutter={[16, 16]}>
           <Col xs={24} md={8}>
             <Field
-              label="Loại bảo lãnh"
+              label={t("form.fields.guaranteeType")}
               required
               error={errors.guaranteeType?.message}
             >
@@ -338,9 +339,9 @@ export default function GuaranteeForm({
                 render={({ field }) => (
                   <Select
                     {...field}
-                    placeholder="Chọn loại bảo lãnh"
+                    placeholder={t("form.placeholders.guaranteeType")}
                     className="w-full"
-                    options={GUARANTEE_TYPE_OPTIONS}
+                    options={guaranteeTypeOptions}
                   />
                 )}
               />
@@ -348,7 +349,7 @@ export default function GuaranteeForm({
           </Col>
 
           <Col xs={24} md={8}>
-            <Field label="Loại tiền" required error={errors.currency?.message}>
+            <Field label={t("form.fields.currency")} required error={errors.currency?.message}>
               <Controller
                 name="currency"
                 control={control}
@@ -364,7 +365,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={8}>
             <Field
-              label="Số tiền bảo lãnh"
+              label={t("form.fields.amount")}
               required
               error={errors.guaranteeAmount?.message}
             >
@@ -377,7 +378,7 @@ export default function GuaranteeForm({
                     style={{ width: "100%" }}
                     className="w-full"
                     inputMode="numeric"
-                    placeholder="Nhập số tiền (bắt buộc nhập số)"
+                    placeholder={t("form.placeholders.amount")}
                     controls={false}
                     min={1}
                     max={1_000_000_000_000}
@@ -446,7 +447,7 @@ export default function GuaranteeForm({
 
           <Col xs={24} md={8}>
             <Field
-              label="Ngày hiệu lực"
+              label={t("form.fields.effectiveDate")}
               required
               error={errors.effectiveDate?.message}
             >
@@ -464,7 +465,7 @@ export default function GuaranteeForm({
                     }}
                     format="DD/MM/YYYY"
                     className="w-full"
-                    placeholder="Chọn ngày"
+                    placeholder={t("form.placeholders.selectDate")}
                     disabledDate={(current) =>
                       current && current.isBefore(dayjs().startOf("day"))
                     }
@@ -476,7 +477,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={8}>
             <Field
-              label="Ngày hết hạn"
+              label={t("form.fields.expiryDate")}
               required
               error={errors.expiryDate?.message}
             >
@@ -492,7 +493,7 @@ export default function GuaranteeForm({
                     }}
                     format="DD/MM/YYYY"
                     className="w-full"
-                    placeholder="Chọn ngày"
+                    placeholder={t("form.placeholders.selectDate")}
                     disabledDate={(current) => {
                       if (!current) return false;
                       if (current.isBefore(dayjs().startOf("day"))) {
@@ -513,14 +514,14 @@ export default function GuaranteeForm({
             </Field>
           </Col>
           <Col xs={24} md={8}>
-            <Field label="Số ngày hiệu lực">
+            <Field label={t("form.fields.validityDays")}>
               <Input
                 value={
                   effectiveDate && expiryDate
-                    ? `${guaranteeDays} ngày`
+                    ? t("detail.labels.days", { days: guaranteeDays })
                     : undefined
                 }
-                placeholder="Tự động tính"
+                placeholder={t("form.placeholders.autoCalculated")}
                 disabled
                 className="bg-gray-50 text-gray-800 font-medium"
               />
@@ -528,7 +529,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={8}>
             <Field
-              label="Số hợp đồng liên quan"
+              label={t("form.fields.relatedContractNumber")}
               error={errors.relatedContractNumber?.message}
             >
               <Controller
@@ -538,7 +539,7 @@ export default function GuaranteeForm({
                   <Input
                     {...field}
                     value={field.value ?? ""}
-                    placeholder="Nhập số hợp đồng (nếu có)"
+                    placeholder={t("form.placeholders.relatedContractNumber")}
                     status={errors.relatedContractNumber ? "error" : ""}
                   />
                 )}
@@ -547,7 +548,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={8}>
             <Field
-              label="Số tham chiếu"
+              label={t("form.fields.referenceNumber")}
               error={errors.referenceNumber?.message}
             >
               <Controller
@@ -557,7 +558,7 @@ export default function GuaranteeForm({
                   <Input
                     {...field}
                     value={field.value ?? ""}
-                    placeholder="Nhập số tham chiếu (nếu có)"
+                    placeholder={t("form.placeholders.referenceNumber")}
                     status={errors.referenceNumber ? "error" : ""}
                   />
                 )}
@@ -567,7 +568,7 @@ export default function GuaranteeForm({
           {guaranteeType === "BID_BOND" && (
             <Col xs={24} md={8}>
               <Field
-                label="Số hiệu thầu"
+                label={t("form.fields.tenderNumber")}
                 required
                 error={errors.tenderNumber?.message}
               >
@@ -578,7 +579,7 @@ export default function GuaranteeForm({
                     <Input
                       {...field}
                       value={field.value ?? ""}
-                      placeholder="Nhập số hiệu thầu"
+                      placeholder={t("form.placeholders.tenderNumber")}
                       status={errors.tenderNumber ? "error" : ""}
                     />
                   )}
@@ -589,11 +590,11 @@ export default function GuaranteeForm({
         </Row>
       </Card>
 
-      <Card title=" Bên thụ hưởng & Liên hệ" size="small">
+      <Card title={t("form.sections.beneficiaryInfo")} size="small">
         <Row gutter={[16, 16]}>
           <Col xs={24} md={12}>
             <Field
-              label="Tên bên thụ hưởng"
+              label={t("form.fields.beneficiaryName")}
               required
               error={errors.beneficiaryName?.message}
             >
@@ -603,7 +604,7 @@ export default function GuaranteeForm({
                 render={({ field }) => (
                   <Input
                     {...field}
-                    placeholder="Nhập tên bên thụ hưởng "
+                    placeholder={t("form.placeholders.beneficiaryName")}
                     status={errors.beneficiaryName ? "error" : ""}
                   />
                 )}
@@ -612,21 +613,24 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={12}>
             <Field
-              label="Địa chỉ bên thụ hưởng"
+              label={t("form.fields.beneficiaryAddress")}
               error={errors.beneficiaryAddress?.message}
             >
               <Controller
                 name="beneficiaryAddress"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder="Nhập địa chỉ" />
+                  <Input
+                    {...field}
+                    placeholder={t("form.placeholders.beneficiaryAddress")}
+                  />
                 )}
               />
             </Field>
           </Col>
           <Col xs={24} md={12}>
             <Field
-              label="Email liên hệ"
+              label={t("form.fields.contactEmail")}
               required
               error={errors.contactEmail?.message}
             >
@@ -636,7 +640,7 @@ export default function GuaranteeForm({
                 render={({ field }) => (
                   <Input
                     {...field}
-                    placeholder="Nhập email"
+                    placeholder={t("form.placeholders.contactEmail")}
                     status={errors.contactEmail ? "error" : ""}
                   />
                 )}
@@ -645,7 +649,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24} md={12}>
             <Field
-              label="Số điện thoại"
+              label={t("form.fields.phoneNumber")}
               required
               error={errors.phoneNumber?.message}
             >
@@ -656,7 +660,7 @@ export default function GuaranteeForm({
                   <Input
                     {...field}
                     maxLength={10}
-                    placeholder="Nhập số điện thoại (10 chữ số)"
+                    placeholder={t("form.placeholders.phoneNumber")}
                     status={errors.phoneNumber ? "error" : ""}
                   />
                 )}
@@ -665,7 +669,7 @@ export default function GuaranteeForm({
           </Col>
           <Col xs={24}>
             <Field
-              label="Mục đích bảo lãnh"
+              label={t("form.fields.purpose")}
               required
               error={errors.purpose?.message}
             >
@@ -677,7 +681,7 @@ export default function GuaranteeForm({
                     <TextArea
                       {...field}
                       rows={3}
-                      placeholder="Nhập mục đích bảo lãnh"
+                      placeholder={t("form.placeholders.purpose")}
                       status={errors.purpose ? "error" : ""}
                       style={{ resize: "none", paddingBottom: 28 }}
                     />
@@ -701,17 +705,17 @@ export default function GuaranteeForm({
               disabled={isLoading}
               className="hover:border-red-500! hover:text-red-500! hover:bg-red-50! transition-colors"
             >
-              Huỷ
+              {tCommon("buttons.cancel")}
             </Button>
             <Button
               htmlType="button"
               onClick={handleSaveDraft}
               loading={isLoading}
             >
-              {isEdit ? "Lưu thay đổi" : "Lưu bản nháp"}
+              {isEdit ? t("form.buttons.saveChanges") : t("form.buttons.saveDraft")}
             </Button>
             <Button type="primary" htmlType="submit" loading={isLoading}>
-              Gửi duyệt
+              {t("form.buttons.submitApproval")}
             </Button>
           </Space>
         </div>

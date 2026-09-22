@@ -28,11 +28,7 @@ const UiInputField = ({
       {/* Ô Input */}
       {children}
       {/* Dòng báo lỗi validation nếu có */}
-      {error && (
-        <span className="text-xs text-(--color-global-refuse-text)">
-          {error}
-        </span>
-      )}
+      {error && <span className="text-xs text-red-600">{error}</span>}
     </div>
   );
 };

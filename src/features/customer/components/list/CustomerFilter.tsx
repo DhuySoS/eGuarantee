@@ -5,6 +5,7 @@ import UiButton from "@/components/ui/atoms/UiButton";
 import UiInput from "@/components/ui/atoms/UiInput";
 import UiInputField from "@/components/ui/molecules/UiInputField";
 import { SearchOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useTranslations } from "next-intl";
 
 export interface CustomerFilterValues {
   keyword?: string;
@@ -21,6 +22,7 @@ const CustomerFilter: React.FC<CustomerFilterProps> = ({
   onReset,
   loading = false,
 }) => {
+  const t = useTranslations("customers.filter");
   const [keyword, setKeyword] = useState<string>("");
 
   const handleReset = () => {
@@ -36,11 +38,11 @@ const CustomerFilter: React.FC<CustomerFilterProps> = ({
 
   return (
     <div className="p-5 bg-gray-50 rounded-2xl space-y-4 border border-gray-200">
-      <p className="text-xl font-bold text-gray-800">Bộ lọc tìm kiếm</p>
+      <p className="text-xl font-bold text-gray-800">{t("title")}</p>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        <UiInputField label="Từ khóa tìm kiếm">
+        <UiInputField label={t("keywordLabel")}>
           <UiInput
-            placeholder="Nhập mã CIF, tên khách hàng, mã số thuế..."
+            placeholder={t("keywordPlaceholder")}
             className="h-10"
             value={keyword}
             allowClear
@@ -59,7 +61,7 @@ const CustomerFilter: React.FC<CustomerFilterProps> = ({
           onClick={handleReset}
           disabled={loading}
         >
-          Đặt lại
+          {t("resetButton")}
         </UiButton>
         <UiButton
           color="primary"
@@ -69,7 +71,7 @@ const CustomerFilter: React.FC<CustomerFilterProps> = ({
           onClick={handleSearch}
           loading={loading}
         >
-          Tìm kiếm
+          {t("searchButton")}
         </UiButton>
       </div>
     </div>
