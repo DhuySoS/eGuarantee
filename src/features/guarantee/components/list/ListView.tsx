@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { App, Alert } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import UiButton from "@/components/ui/atoms/UiButton";
 import GuaranteeTable from "./GuaranteeTable";
-import Filter, { type FilterValues } from "./Filter";
+import Filter from "./Filter";
 import { useGuaranteeList } from "../../hooks/useGuaranteeList";
+import useGuaranteeStatusCounts from "../../hooks/useGuaranteeStatusCounts";
+import {
+  useGuaranteeQueryParams,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from "../../hooks/useGuaranteeQueryParams";
 import guaranteeService from "../../services/guarantee.service";
 import { useRole } from "@/features/auth/hooks/useRole";
 import { useTranslations } from "next-intl";
-import type {
-  GuaranteeQueryParams,
-  GuaranteeListItem,
-} from "../../types/guarantee";
-
-const DEFAULT_PAGE = 0;
-const DEFAULT_PAGE_SIZE = 5;
+import type { GuaranteeListItem } from "../../types/guarantee";
 
 const ListView = () => {
   const t = useTranslations("guarantees.list");
@@ -24,21 +24,34 @@ const ListView = () => {
   const { message } = App.useApp();
   const { role } = useRole();
 
-  const [queryParams, setQueryParams] = useState<GuaranteeQueryParams>({
-    page: DEFAULT_PAGE,
-    size: DEFAULT_PAGE_SIZE,
-    sortBy: "createdDate",
-    sortDirection: "desc",
-  });
+  const {
+    queryParams,
+    activeTab,
+    handlePageChange,
+    handleFilterSubmit,
+    handleFilterReset,
+    handleSortChange,
+    handleTabChange,
+  } = useGuaranteeQueryParams();
 
   const { data, isLoading, isFetching, isError, error, refetch } =
     useGuaranteeList(queryParams);
+
+  // Lấy số lượng thống kê theo từng trạng thái từ backend API
+  const { data: statusCounts, refetch: refetchStatusCounts } =
+    useGuaranteeStatusCounts({
+      keyword: queryParams.keyword,
+      guaranteeType: queryParams.guaranteeType,
+      createdFrom: queryParams.createdFrom,
+      createdTo: queryParams.createdTo,
+    });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => guaranteeService.deleteGuarantee(id),
     onSuccess: () => {
       message.success(t("messages.deleteSuccess"));
       refetch();
+      refetchStatusCounts();
     },
     onError: (err: any) => {
       message.error(err?.message || t("messages.deleteFailed"));
@@ -49,46 +62,16 @@ const ListView = () => {
     deleteMutation.mutate(record.id);
   };
 
-  const handlePageChange = (uiPage: number, size: number) => {
-    setQueryParams((prev) => ({
-      ...prev,
-      page: Math.max(0, uiPage - 1),
-      size,
-    }));
-  };
-
-  const handleFilterSubmit = (filters: FilterValues) => {
-    setQueryParams((prev) => ({
-      ...prev,
-      ...filters,
-      page: DEFAULT_PAGE,
-    }));
-  };
-
-  const handleFilterReset = () => {
-    setQueryParams({
-      page: DEFAULT_PAGE,
-      size: DEFAULT_PAGE_SIZE,
-      sortBy: "createdDate",
-      sortDirection: "desc",
-    });
-  };
-
-  const handleSortChange = (
-    sortBy: "createdDate" | "guaranteeAmount" | "customerName",
-    sortDirection: "asc" | "desc",
-  ) => {
-    setQueryParams((prev) => ({
-      ...prev,
-      sortBy,
-      sortDirection,
-      page: DEFAULT_PAGE,
-    }));
-  };
-
   return (
     <div className="space-y-6">
       <Filter
+        initialValues={{
+          keyword: queryParams.keyword,
+          status: queryParams.status,
+          guaranteeType: queryParams.guaranteeType,
+          createdFrom: queryParams.createdFrom,
+          createdTo: queryParams.createdTo,
+        }}
         onSearch={handleFilterSubmit}
         onReset={handleFilterReset}
         loading={isLoading || isFetching}
@@ -125,6 +108,9 @@ const ListView = () => {
         sortBy={queryParams.sortBy}
         sortDirection={queryParams.sortDirection}
         role={role}
+        activeTab={activeTab}
+        tabCounts={statusCounts}
+        onTabChange={handleTabChange}
         onDelete={handleDelete}
         onPageChange={handlePageChange}
         onSortChange={handleSortChange}

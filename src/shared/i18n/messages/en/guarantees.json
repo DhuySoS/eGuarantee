@@ -57,7 +57,7 @@
   },
   "statuses": {
     "DRAFT": "Draft",
-    "PENDING_APPROVAL": "Pending Approval",
+    "PENDING_APPROVAL": "Pending",
     "APPROVED": "Approved",
     "REJECTED": "Rejected"
   },

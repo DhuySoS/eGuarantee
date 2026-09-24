@@ -21,31 +21,50 @@ export interface FilterValues {
 }
 
 export interface FilterProps {
+  initialValues?: FilterValues;
   onSearch?: (values: FilterValues) => void;
   onReset?: () => void;
   loading?: boolean;
 }
 
 const Filter: React.FC<FilterProps> = ({
+  initialValues,
   onSearch,
   onReset,
   loading = false,
 }) => {
   const t = useTranslations("guarantees.list.filter");
-  const { guaranteeStatusOptions, guaranteeTypeOptions } = useGuaranteeOptions();
-  const [keyword, setKeyword] = useState<string>("");
-  const [status, setStatus] = useState<GuaranteeStatus | undefined>(undefined);
-  const [guaranteeType, setGuaranteeType] = useState<GuaranteeType | undefined>(
-    undefined,
+  const { guaranteeStatusOptions, guaranteeTypeOptions } =
+    useGuaranteeOptions();
+  const [keyword, setKeyword] = useState<string>(initialValues?.keyword ?? "");
+  const [status, setStatus] = useState<GuaranteeStatus | undefined>(
+    initialValues?.status,
   );
-  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
-  const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const [guaranteeType, setGuaranteeType] = useState<GuaranteeType | undefined>(
+    initialValues?.guaranteeType,
+  );
+  const [fromDate, setFromDate] = useState<Dayjs | null>(
+    initialValues?.createdFrom ? dayjs(initialValues.createdFrom) : null,
+  );
+  const [toDate, setToDate] = useState<Dayjs | null>(
+    initialValues?.createdTo ? dayjs(initialValues.createdTo) : null,
+  );
 
-  // "Từ ngày": Không được chọn ngày ở quá khứ (chỉ được chọn từ hôm nay trở đi)
-  // const disabledFromDate = (current: Dayjs) => {
-  //   return !!current && current < dayjs().startOf("day");
-  // };
-
+  React.useEffect(() => {
+    setKeyword(initialValues?.keyword ?? "");
+    setStatus(initialValues?.status);
+    setGuaranteeType(initialValues?.guaranteeType);
+    setFromDate(
+      initialValues?.createdFrom ? dayjs(initialValues.createdFrom) : null,
+    );
+    setToDate(initialValues?.createdTo ? dayjs(initialValues.createdTo) : null);
+  }, [
+    initialValues?.keyword,
+    initialValues?.status,
+    initialValues?.guaranteeType,
+    initialValues?.createdFrom,
+    initialValues?.createdTo,
+  ]);
   // "Đến ngày": Phải chọn từ ngày tạo trở đi (không được trước "Từ ngày")
   const disabledToDate = (current: Dayjs) => {
     if (!fromDate) return true;
@@ -89,7 +108,9 @@ const Filter: React.FC<FilterProps> = ({
 
   return (
     <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-2xl space-y-6 border border-gray-200 dark:border-gray-800 transition-colors duration-200">
-      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t("title")}</p>
+      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        {t("title")}
+      </p>
       <div className="grid gap-6 grid-cols-3">
         <UiInputField label={t("keywordLabel")}>
           <UiInput

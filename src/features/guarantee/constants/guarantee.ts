@@ -1,10 +1,24 @@
 import {
   GuaranteeStatus,
+  GuaranteeTabKey,
   GuaranteeType,
   Currency,
   UserRole,
   HistoryAction,
 } from "../types/guarantee";
+
+export interface GuaranteeTabItem {
+  key: GuaranteeTabKey;
+  label: string;
+}
+
+export const GUARANTEE_STATUS_TABS: GuaranteeTabItem[] = [
+  { key: "ALL", label: "TẤT CẢ" },
+  { key: "DRAFT", label: "BẢN NHÁP" },
+  { key: "PENDING_APPROVAL", label: "CHỜ DUYỆT" },
+  { key: "APPROVED", label: "ĐÃ DUYỆT" },
+  { key: "REJECTED", label: "TỪ CHỐI" },
+];
 
 export const GUARANTEE_STATUS: Record<GuaranteeStatus, GuaranteeStatus> = {
   DRAFT: "DRAFT",

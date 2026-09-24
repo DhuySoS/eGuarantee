@@ -136,6 +136,17 @@ export const guaranteeService = {
       return [];
     }
   },
+
+  async getStatusCounts(
+    params?: Omit<GuaranteeQueryParams, "status" | "page" | "size">,
+  ): Promise<Record<string, number>> {
+    const response = await apiClient.get<ApiResponse<Record<string, number>>>(
+      "/guarantees/status-counts",
+      { params },
+    );
+    const resData = response.data as any;
+    return resData?.data ?? resData ?? {};
+  },
 };
 
 export default guaranteeService;

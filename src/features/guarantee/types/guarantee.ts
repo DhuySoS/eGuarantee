@@ -1,6 +1,8 @@
 export type GuaranteeStatus =
   "DRAFT" | "PENDING_APPROVAL" | "APPROVED" | "REJECTED";
 
+export type GuaranteeTabKey = "ALL" | GuaranteeStatus;
+
 export type GuaranteeType =
   "BID_BOND" | "PERFORMANCE" | "ADVANCE_PAYMENT" | "PAYMENT" | "OTHER";
 
