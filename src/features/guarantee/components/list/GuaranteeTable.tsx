@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import UiTable from "@/components/ui/atoms/UiTable";
 import UiPagination from "@/components/ui/atoms/UiPagination";
 import type { TableProps } from "antd";
 import UiButton from "@/components/ui/atoms/UiButton";
 import { WarningOutlined } from "@ant-design/icons";
-import type { GuaranteeListItem, UserRole } from "../../types/guarantee";
+import type {
+  GuaranteeListItem,
+  GuaranteeTabKey,
+  UserRole,
+} from "../../types/guarantee";
 import {
   getGuaranteeColumns,
   type SortableGuaranteeField,
 } from "./guaranteeColumn";
+import GuaranteeStatusTabs from "./GuaranteeStatusTabs";
 
 import { useLocale, useTranslations } from "next-intl";
 
@@ -23,6 +28,9 @@ export interface GuaranteeTableProps {
   sortBy?: SortableGuaranteeField;
   sortDirection?: "asc" | "desc";
   role?: UserRole;
+  activeTab?: GuaranteeTabKey;
+  tabCounts?: Partial<Record<GuaranteeTabKey, number>>;
+  onTabChange?: (tab: GuaranteeTabKey) => void;
   onDelete?: (record: GuaranteeListItem) => void;
   onPageChange?: (page: number, pageSize: number) => void;
   onSortChange?: (
@@ -40,10 +48,20 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
   sortBy,
   sortDirection,
   role = "MAKER",
+  activeTab,
+  tabCounts,
+  onTabChange,
   onDelete,
   onPageChange,
   onSortChange,
 }) => {
+  const [localActiveTab, setLocalActiveTab] = useState<GuaranteeTabKey>("ALL");
+  const currentTab = activeTab ?? localActiveTab;
+
+  const handleTabClick = (tab: GuaranteeTabKey) => {
+    setLocalActiveTab(tab);
+    onTabChange?.(tab);
+  };
   const t = useTranslations("guarantees.list");
   const tType = useTranslations("guarantees.types");
   const tStatus = useTranslations("guarantees.statuses");
@@ -82,10 +100,18 @@ const GuaranteeTable: React.FC<GuaranteeTableProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="text-base text-gray-800 dark:text-gray-200">
-        {t("table.total", { count: total })}
-      </div>
       <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-xs border border-gray-100 dark:border-gray-800">
+        <GuaranteeStatusTabs
+          activeTab={currentTab}
+          onChange={handleTabClick}
+          counts={{
+            ALL: tabCounts?.ALL ?? total ?? 0,
+            DRAFT: tabCounts?.DRAFT ?? 0,
+            PENDING_APPROVAL: tabCounts?.PENDING_APPROVAL ?? 0,
+            APPROVED: tabCounts?.APPROVED ?? 0,
+            REJECTED: tabCounts?.REJECTED ?? 0,
+          }}
+        />
         <UiTable<GuaranteeListItem>
           rowKey="id"
           columns={columns}

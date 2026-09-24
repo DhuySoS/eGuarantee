@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import UiButton from "@/components/ui/atoms/UiButton";
 import PageContainer from "@/components/ui/organisms/PageContainer";
 import ListView from "@/features/guarantee/components/list/ListView";
@@ -35,7 +36,9 @@ export default async function GuaranteeListPage({
         },
       ]}
     >
-      <ListView />
+      <Suspense fallback={null}>
+        <ListView />
+      </Suspense>
     </PageContainer>
   );
 }
